@@ -10,9 +10,9 @@ width equal to the page content width, before any `Runtime.evaluate`.
 from __future__ import annotations
 
 import base64
-import logging
 import dataclasses
 import json
+import logging
 import os
 import re
 import shutil
@@ -305,7 +305,9 @@ class _CDP:
             [chrome, "--headless=new", "--disable-gpu", "--no-first-run",
              "--no-default-browser-check", "--hide-scrollbars",
              "--remote-debugging-port=0", f"--user-data-dir={self.tmp}",
-             f"--window-size={width},{height}", "about:blank"],
+             f"--window-size={width},{height}", "about:blank"]
+            # Opt-in for Linux CI runners (Ubuntu 24.04) where Chrome's sandbox cannot start.
+            + (["--no-sandbox"] if os.environ.get("PRINTFIT_NO_SANDBOX") else []),
             stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
         self.port = None
         deadline = time.time() + 20
