@@ -1,0 +1,1894 @@
+{
+ "pdf_path": "render.pdf",
+ "page_png_paths": [
+  "page-1.png",
+  "page-2.png",
+  "page-3.png",
+  "page-4.png"
+ ],
+ "dom_geometry": {
+  "body_font_px": 14.6667,
+  "doc_client_w": 730,
+  "doc_scroll_h": 2166,
+  "body_rect": {
+   "x": 0.203125,
+   "y": 0,
+   "w": 729.59375,
+   "h": 2165.828125
+  },
+  "page_rule": {
+   "marginTop": "0.45in",
+   "marginRight": "0.45in",
+   "marginBottom": "0.45in",
+   "marginLeft": "0.45in",
+   "margin": "0.45in",
+   "size": "letter"
+  },
+  "fonts": {
+   "declared": [],
+   "resolved": [],
+   "missing": []
+  },
+  "figures": [],
+  "qa": [],
+  "headings": [
+   {
+    "level": 1,
+    "text": "Motion Test",
+    "selector": "h1",
+    "offset_top": 33.59375,
+    "rect": {
+     "x": 38.59375,
+     "y": 33.59375,
+     "w": 110.734375,
+     "h": 28.390625
+    },
+    "break_before": "auto"
+   },
+   {
+    "level": 2,
+    "text": "Part I \u2014 Multiple Choice",
+    "selector": "h2",
+    "offset_top": 175.9375,
+    "rect": {
+     "x": 38.59375,
+     "y": 175.9375,
+     "w": 652.8125,
+     "h": 27.765625
+    },
+    "break_before": "auto"
+   },
+   {
+    "level": 2,
+    "text": "Part II \u2014 Long Answer",
+    "selector": "h2[2]",
+    "offset_top": 1218.328125,
+    "rect": {
+     "x": 38.59375,
+     "y": 1218.328125,
+     "w": 652.8125,
+     "h": 27.765625
+    },
+    "break_before": "auto"
+   }
+  ],
+  "blocks": [
+   {
+    "selector": "h1",
+    "tag": "h1",
+    "classes": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 33.59375,
+     "w": 110.734375,
+     "h": 28.390625
+    },
+    "kind": "text",
+    "font_px": 20,
+    "line_height_px": 28.4,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "p.sub",
+    "tag": "p",
+    "classes": [
+     "sub"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 63.984375,
+     "w": 110.734375,
+     "h": 17.984375
+    },
+    "kind": "text",
+    "font_px": 12.6667,
+    "line_height_px": 17.9867,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "div",
+    "tag": "div",
+    "classes": [],
+    "rect": {
+     "x": 402.546875,
+     "y": 73.046875,
+     "w": 288.859375,
+     "h": 18.921875
+    },
+    "kind": "text",
+    "font_px": 13.3333,
+    "line_height_px": 18.9333,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "div.rubric",
+    "tag": "div",
+    "classes": [
+     "rubric"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 109.96875,
+     "w": 652.8125,
+     "h": 51.96875
+    },
+    "kind": "text",
+    "font_px": 12.6667,
+    "line_height_px": 17.9867,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "h2",
+    "tag": "h2",
+    "classes": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 175.9375,
+     "w": 652.8125,
+     "h": 27.765625
+    },
+    "kind": "text",
+    "font_px": 15.3333,
+    "line_height_px": 21.7733,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "p.q",
+    "tag": "p",
+    "classes": [
+     "q"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 210.703125,
+     "w": 652.8125,
+     "h": 20.828125
+    },
+    "kind": "text",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 238.53125,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[2]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 261.40625,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[3]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 284.28125,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[4]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 307.15625,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "p.q[2]",
+    "tag": "p",
+    "classes": [
+     "q"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 336.03125,
+     "w": 652.8125,
+     "h": 20.828125
+    },
+    "kind": "text",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[5]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 363.859375,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[6]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 386.734375,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[7]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 409.609375,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[8]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 432.484375,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "p.q[3]",
+    "tag": "p",
+    "classes": [
+     "q"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 461.359375,
+     "w": 652.8125,
+     "h": 20.828125
+    },
+    "kind": "text",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[9]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 489.1875,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[10]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 512.0625,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[11]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 534.9375,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[12]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 557.8125,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "p.q[4]",
+    "tag": "p",
+    "classes": [
+     "q"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 586.6875,
+     "w": 652.8125,
+     "h": 20.828125
+    },
+    "kind": "text",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[13]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 614.515625,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[14]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 637.390625,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[15]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 660.265625,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[16]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 683.140625,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "p.q[5]",
+    "tag": "p",
+    "classes": [
+     "q"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 712.015625,
+     "w": 652.8125,
+     "h": 20.828125
+    },
+    "kind": "text",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[17]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 739.84375,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[18]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 762.71875,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[19]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 785.59375,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[20]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 808.46875,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "p.q[6]",
+    "tag": "p",
+    "classes": [
+     "q"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 837.34375,
+     "w": 652.8125,
+     "h": 20.828125
+    },
+    "kind": "text",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[21]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 865.171875,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[22]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 888.046875,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[23]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 910.921875,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[24]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 933.796875,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "p.q[7]",
+    "tag": "p",
+    "classes": [
+     "q"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 962.671875,
+     "w": 652.8125,
+     "h": 20.828125
+    },
+    "kind": "text",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[25]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 990.5,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[26]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 1013.375,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[27]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 1036.25,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[28]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 1059.125,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "p.q[8]",
+    "tag": "p",
+    "classes": [
+     "q"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 1088,
+     "w": 652.8125,
+     "h": 20.828125
+    },
+    "kind": "text",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[29]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 1115.828125,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[30]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 1138.703125,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[31]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 1161.578125,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "li[32]",
+    "tag": "li",
+    "classes": [],
+    "rect": {
+     "x": 56.59375,
+     "y": 1184.453125,
+     "w": 634.8125,
+     "h": 19.875
+    },
+    "kind": "text",
+    "font_px": 14,
+    "line_height_px": 19.88,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "h2[2]",
+    "tag": "h2",
+    "classes": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 1218.328125,
+     "w": 652.8125,
+     "h": 27.765625
+    },
+    "kind": "text",
+    "font_px": 15.3333,
+    "line_height_px": 21.7733,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "p.q[9]",
+    "tag": "p",
+    "classes": [
+     "q"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 1253.09375,
+     "w": 652.8125,
+     "h": 41.65625
+    },
+    "kind": "text",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "div.sp",
+    "tag": "div",
+    "classes": [
+     "sp"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 1301.75,
+     "w": 652.8125,
+     "h": 230.390625
+    },
+    "kind": "space",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "p.q[10]",
+    "tag": "p",
+    "classes": [
+     "q"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 1546.140625,
+     "w": 652.8125,
+     "h": 41.65625
+    },
+    "kind": "text",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "div.sp[2]",
+    "tag": "div",
+    "classes": [
+     "sp"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 1594.796875,
+     "w": 652.8125,
+     "h": 230.390625
+    },
+    "kind": "space",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "p.q[11]",
+    "tag": "p",
+    "classes": [
+     "q"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 1839.1875,
+     "w": 652.8125,
+     "h": 41.65625
+    },
+    "kind": "text",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "div.sp[3]",
+    "tag": "div",
+    "classes": [
+     "sp"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 1887.84375,
+     "w": 652.8125,
+     "h": 230.390625
+    },
+    "kind": "space",
+    "font_px": 14.6667,
+    "line_height_px": 20.8267,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   }
+  ],
+  "lines": [
+   {
+    "y_top": 35.59375,
+    "y_bottom": 58.59375,
+    "x_left": 38.59375,
+    "x_right": 149.328125,
+    "block": "h1"
+   },
+   {
+    "y_top": 64.984375,
+    "y_bottom": 79.984375,
+    "x_left": 38.59375,
+    "x_right": 82.21875,
+    "block": "p.sub"
+   },
+   {
+    "y_top": 74.046875,
+    "y_bottom": 89.046875,
+    "x_left": 402.546875,
+    "x_right": 441.8125,
+    "block": "div"
+   },
+   {
+    "y_top": 118.96875,
+    "y_bottom": 133.96875,
+    "x_left": 150.203125,
+    "x_right": 645.65625,
+    "block": "div.rubric"
+   },
+   {
+    "y_top": 136.953125,
+    "y_bottom": 151.953125,
+    "x_left": 49.59375,
+    "x_right": 102.375,
+    "block": "div.rubric"
+   },
+   {
+    "y_top": 179.9375,
+    "y_bottom": 197.9375,
+    "x_left": 48.59375,
+    "x_right": 224.0625,
+    "block": "h2"
+   },
+   {
+    "y_top": 212.703125,
+    "y_bottom": 228.703125,
+    "x_left": 50.828125,
+    "x_right": 614.703125,
+    "block": "p.q"
+   },
+   {
+    "y_top": 239.53125,
+    "y_bottom": 255.53125,
+    "x_left": 56.59375,
+    "x_right": 221.609375,
+    "block": "li"
+   },
+   {
+    "y_top": 262.40625,
+    "y_bottom": 278.40625,
+    "x_left": 56.59375,
+    "x_right": 223.140625,
+    "block": "li[2]"
+   },
+   {
+    "y_top": 285.28125,
+    "y_bottom": 301.28125,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[3]"
+   },
+   {
+    "y_top": 308.15625,
+    "y_bottom": 324.15625,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[4]"
+   },
+   {
+    "y_top": 338.03125,
+    "y_bottom": 354.03125,
+    "x_left": 50.828125,
+    "x_right": 614.703125,
+    "block": "p.q[2]"
+   },
+   {
+    "y_top": 364.859375,
+    "y_bottom": 380.859375,
+    "x_left": 56.59375,
+    "x_right": 221.609375,
+    "block": "li[5]"
+   },
+   {
+    "y_top": 387.734375,
+    "y_bottom": 403.734375,
+    "x_left": 56.59375,
+    "x_right": 223.140625,
+    "block": "li[6]"
+   },
+   {
+    "y_top": 410.609375,
+    "y_bottom": 426.609375,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[7]"
+   },
+   {
+    "y_top": 433.484375,
+    "y_bottom": 449.484375,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[8]"
+   },
+   {
+    "y_top": 463.359375,
+    "y_bottom": 479.359375,
+    "x_left": 50.828125,
+    "x_right": 614.703125,
+    "block": "p.q[3]"
+   },
+   {
+    "y_top": 490.1875,
+    "y_bottom": 506.1875,
+    "x_left": 56.59375,
+    "x_right": 221.609375,
+    "block": "li[9]"
+   },
+   {
+    "y_top": 513.0625,
+    "y_bottom": 529.0625,
+    "x_left": 56.59375,
+    "x_right": 223.140625,
+    "block": "li[10]"
+   },
+   {
+    "y_top": 535.9375,
+    "y_bottom": 551.9375,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[11]"
+   },
+   {
+    "y_top": 558.8125,
+    "y_bottom": 574.8125,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[12]"
+   },
+   {
+    "y_top": 588.6875,
+    "y_bottom": 604.6875,
+    "x_left": 50.828125,
+    "x_right": 614.703125,
+    "block": "p.q[4]"
+   },
+   {
+    "y_top": 615.515625,
+    "y_bottom": 631.515625,
+    "x_left": 56.59375,
+    "x_right": 221.609375,
+    "block": "li[13]"
+   },
+   {
+    "y_top": 638.390625,
+    "y_bottom": 654.390625,
+    "x_left": 56.59375,
+    "x_right": 223.140625,
+    "block": "li[14]"
+   },
+   {
+    "y_top": 661.265625,
+    "y_bottom": 677.265625,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[15]"
+   },
+   {
+    "y_top": 684.140625,
+    "y_bottom": 700.140625,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[16]"
+   },
+   {
+    "y_top": 714.015625,
+    "y_bottom": 730.015625,
+    "x_left": 50.828125,
+    "x_right": 614.703125,
+    "block": "p.q[5]"
+   },
+   {
+    "y_top": 740.84375,
+    "y_bottom": 756.84375,
+    "x_left": 56.59375,
+    "x_right": 221.609375,
+    "block": "li[17]"
+   },
+   {
+    "y_top": 763.71875,
+    "y_bottom": 779.71875,
+    "x_left": 56.59375,
+    "x_right": 223.140625,
+    "block": "li[18]"
+   },
+   {
+    "y_top": 786.59375,
+    "y_bottom": 802.59375,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[19]"
+   },
+   {
+    "y_top": 809.46875,
+    "y_bottom": 825.46875,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[20]"
+   },
+   {
+    "y_top": 839.34375,
+    "y_bottom": 855.34375,
+    "x_left": 50.828125,
+    "x_right": 614.703125,
+    "block": "p.q[6]"
+   },
+   {
+    "y_top": 866.171875,
+    "y_bottom": 882.171875,
+    "x_left": 56.59375,
+    "x_right": 221.609375,
+    "block": "li[21]"
+   },
+   {
+    "y_top": 889.046875,
+    "y_bottom": 905.046875,
+    "x_left": 56.59375,
+    "x_right": 223.140625,
+    "block": "li[22]"
+   },
+   {
+    "y_top": 911.921875,
+    "y_bottom": 927.921875,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[23]"
+   },
+   {
+    "y_top": 934.796875,
+    "y_bottom": 950.796875,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[24]"
+   },
+   {
+    "y_top": 964.671875,
+    "y_bottom": 980.671875,
+    "x_left": 50.828125,
+    "x_right": 614.703125,
+    "block": "p.q[7]"
+   },
+   {
+    "y_top": 991.5,
+    "y_bottom": 1007.5,
+    "x_left": 56.59375,
+    "x_right": 221.609375,
+    "block": "li[25]"
+   },
+   {
+    "y_top": 1014.375,
+    "y_bottom": 1030.375,
+    "x_left": 56.59375,
+    "x_right": 223.140625,
+    "block": "li[26]"
+   },
+   {
+    "y_top": 1037.25,
+    "y_bottom": 1053.25,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[27]"
+   },
+   {
+    "y_top": 1060.125,
+    "y_bottom": 1076.125,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[28]"
+   },
+   {
+    "y_top": 1090,
+    "y_bottom": 1106,
+    "x_left": 50.828125,
+    "x_right": 614.703125,
+    "block": "p.q[8]"
+   },
+   {
+    "y_top": 1116.828125,
+    "y_bottom": 1132.828125,
+    "x_left": 56.59375,
+    "x_right": 221.609375,
+    "block": "li[29]"
+   },
+   {
+    "y_top": 1139.703125,
+    "y_bottom": 1155.703125,
+    "x_left": 56.59375,
+    "x_right": 223.140625,
+    "block": "li[30]"
+   },
+   {
+    "y_top": 1162.578125,
+    "y_bottom": 1178.578125,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[31]"
+   },
+   {
+    "y_top": 1185.453125,
+    "y_bottom": 1201.453125,
+    "x_left": 56.59375,
+    "x_right": 224.6875,
+    "block": "li[32]"
+   },
+   {
+    "y_top": 1222.328125,
+    "y_bottom": 1240.328125,
+    "x_left": 48.59375,
+    "x_right": 211.578125,
+    "block": "h2[2]"
+   },
+   {
+    "y_top": 1255.09375,
+    "y_bottom": 1271.09375,
+    "x_left": 50.828125,
+    "x_right": 641.625,
+    "block": "p.q[9]"
+   },
+   {
+    "y_top": 1275.921875,
+    "y_bottom": 1291.921875,
+    "x_left": 38.59375,
+    "x_right": 155.9375,
+    "block": "p.q[9]"
+   },
+   {
+    "y_top": 1548.140625,
+    "y_bottom": 1564.140625,
+    "x_left": 58.984375,
+    "x_right": 649.78125,
+    "block": "p.q[10]"
+   },
+   {
+    "y_top": 1568.96875,
+    "y_bottom": 1584.96875,
+    "x_left": 38.59375,
+    "x_right": 155.9375,
+    "block": "p.q[10]"
+   },
+   {
+    "y_top": 1841.1875,
+    "y_bottom": 1857.1875,
+    "x_left": 58.171875,
+    "x_right": 648.96875,
+    "block": "p.q[11]"
+   },
+   {
+    "y_top": 1862.015625,
+    "y_bottom": 1878.015625,
+    "x_left": 38.59375,
+    "x_right": 155.9375,
+    "block": "p.q[11]"
+   }
+  ],
+  "atoms": [
+   {
+    "selector": "div.hdr",
+    "tag": "div",
+    "classes": [
+     "hdr"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 33.59375,
+     "w": 652.8125,
+     "h": 66.375
+    },
+    "avoid": false,
+    "fig_floor": 66.375,
+    "text": "Motion TestPhysicsName",
+    "heading": "Motion Test",
+    "heading_level": 1,
+    "break_before": false,
+    "figures": [],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "div.rubric",
+    "tag": "div",
+    "classes": [
+     "rubric"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 109.96875,
+     "w": 652.8125,
+     "h": 51.96875
+    },
+    "avoid": false,
+    "fig_floor": 51.96875,
+    "text": "Before you start. Show the equation you start from, rearrange it for the unknown",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "h2",
+    "tag": "h2",
+    "classes": [],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 175.9375,
+     "w": 652.8125,
+     "h": 27.765625
+    },
+    "avoid": false,
+    "fig_floor": 27.765625,
+    "text": "Part I \u2014 Multiple Choice",
+    "heading": "Part I \u2014 Multiple Choice",
+    "heading_level": 2,
+    "break_before": false,
+    "figures": [],
+    "spaces": [],
+    "qa": false,
+    "group": "group:div.mcblock"
+   },
+   {
+    "selector": "div.mcq",
+    "tag": "div",
+    "classes": [
+     "mcq"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 210.703125,
+     "w": 652.8125,
+     "h": 116.328125
+    },
+    "avoid": true,
+    "fig_floor": 116.328125,
+    "text": "1. A cart moves along a track in situation 1. Which statement about its velocity",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [],
+    "spaces": [],
+    "qa": false,
+    "group": "group:div.mcblock"
+   },
+   {
+    "selector": "div.mcq[2]",
+    "tag": "div",
+    "classes": [
+     "mcq"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 336.03125,
+     "w": 652.8125,
+     "h": 116.328125
+    },
+    "avoid": true,
+    "fig_floor": 116.328125,
+    "text": "2. A cart moves along a track in situation 2. Which statement about its velocity",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [],
+    "spaces": [],
+    "qa": false,
+    "group": "group:div.mcblock"
+   },
+   {
+    "selector": "div.mcq[3]",
+    "tag": "div",
+    "classes": [
+     "mcq"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 461.359375,
+     "w": 652.8125,
+     "h": 116.328125
+    },
+    "avoid": true,
+    "fig_floor": 116.328125,
+    "text": "3. A cart moves along a track in situation 3. Which statement about its velocity",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [],
+    "spaces": [],
+    "qa": false,
+    "group": "group:div.mcblock"
+   },
+   {
+    "selector": "div.mcq[4]",
+    "tag": "div",
+    "classes": [
+     "mcq"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 586.6875,
+     "w": 652.8125,
+     "h": 116.328125
+    },
+    "avoid": true,
+    "fig_floor": 116.328125,
+    "text": "4. A cart moves along a track in situation 4. Which statement about its velocity",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [],
+    "spaces": [],
+    "qa": false,
+    "group": "group:div.mcblock"
+   },
+   {
+    "selector": "div.mcq[5]",
+    "tag": "div",
+    "classes": [
+     "mcq"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 712.015625,
+     "w": 652.8125,
+     "h": 116.328125
+    },
+    "avoid": true,
+    "fig_floor": 116.328125,
+    "text": "5. A cart moves along a track in situation 5. Which statement about its velocity",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [],
+    "spaces": [],
+    "qa": false,
+    "group": "group:div.mcblock"
+   },
+   {
+    "selector": "div.mcq[6]",
+    "tag": "div",
+    "classes": [
+     "mcq"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 837.34375,
+     "w": 652.8125,
+     "h": 116.328125
+    },
+    "avoid": true,
+    "fig_floor": 116.328125,
+    "text": "6. A cart moves along a track in situation 6. Which statement about its velocity",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [],
+    "spaces": [],
+    "qa": false,
+    "group": "group:div.mcblock"
+   },
+   {
+    "selector": "div.mcq[7]",
+    "tag": "div",
+    "classes": [
+     "mcq"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 962.671875,
+     "w": 652.8125,
+     "h": 116.328125
+    },
+    "avoid": true,
+    "fig_floor": 116.328125,
+    "text": "7. A cart moves along a track in situation 7. Which statement about its velocity",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [],
+    "spaces": [],
+    "qa": false,
+    "group": "group:div.mcblock"
+   },
+   {
+    "selector": "div.mcq[8]",
+    "tag": "div",
+    "classes": [
+     "mcq"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 1088,
+     "w": 652.8125,
+     "h": 116.328125
+    },
+    "avoid": true,
+    "fig_floor": 116.328125,
+    "text": "8. A cart moves along a track in situation 8. Which statement about its velocity",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [],
+    "spaces": [],
+    "qa": false,
+    "group": "group:div.mcblock"
+   },
+   {
+    "selector": "h2[2]",
+    "tag": "h2",
+    "classes": [],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 1218.328125,
+     "w": 652.8125,
+     "h": 27.765625
+    },
+    "avoid": false,
+    "fig_floor": 27.765625,
+    "text": "Part II \u2014 Long Answer",
+    "heading": "Part II \u2014 Long Answer",
+    "heading_level": 2,
+    "break_before": false,
+    "figures": [],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "div.prob",
+    "tag": "div",
+    "classes": [
+     "prob"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 1253.09375,
+     "w": 652.8125,
+     "h": 279.046875
+    },
+    "avoid": true,
+    "fig_floor": 279.046875,
+    "text": "9. A cart starts from rest and speeds up at a constant rate. Find its velocity a",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [],
+    "spaces": [
+     {
+      "classes": [
+       "sp"
+      ],
+      "rect": {
+       "x": 38.59375,
+       "y": 1301.75,
+       "w": 652.8125,
+       "h": 230.390625
+      },
+      "inline_height": "2.4in"
+     }
+    ],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "div.prob[2]",
+    "tag": "div",
+    "classes": [
+     "prob"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 1546.140625,
+     "w": 652.8125,
+     "h": 279.046875
+    },
+    "avoid": true,
+    "fig_floor": 279.046875,
+    "text": "10. A cart starts from rest and speeds up at a constant rate. Find its velocity ",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [],
+    "spaces": [
+     {
+      "classes": [
+       "sp"
+      ],
+      "rect": {
+       "x": 38.59375,
+       "y": 1594.796875,
+       "w": 652.8125,
+       "h": 230.390625
+      },
+      "inline_height": "2.4in"
+     }
+    ],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "div.prob[3]",
+    "tag": "div",
+    "classes": [
+     "prob"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 38.59375,
+     "y": 1839.1875,
+     "w": 652.8125,
+     "h": 279.046875
+    },
+    "avoid": true,
+    "fig_floor": 279.046875,
+    "text": "11. A cart starts from rest and speeds up at a constant rate. Find its velocity ",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [],
+    "spaces": [
+     {
+      "classes": [
+       "sp"
+      ],
+      "rect": {
+       "x": 38.59375,
+       "y": 1887.84375,
+       "w": 652.8125,
+       "h": 230.390625
+      },
+      "inline_height": "2.4in"
+     }
+    ],
+    "qa": false,
+    "group": null
+   }
+  ],
+  "inline_heights": [
+   {
+    "classes": [
+     "sp"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 1301.75,
+     "w": 652.8125,
+     "h": 230.390625
+    },
+    "height": "2.4in",
+    "empty": true,
+    "atom": 12
+   },
+   {
+    "classes": [
+     "sp"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 1594.796875,
+     "w": 652.8125,
+     "h": 230.390625
+    },
+    "height": "2.4in",
+    "empty": true,
+    "atom": 13
+   },
+   {
+    "classes": [
+     "sp"
+    ],
+    "rect": {
+     "x": 38.59375,
+     "y": 1887.84375,
+     "w": 652.8125,
+     "h": 230.390625
+    },
+    "height": "2.4in",
+    "empty": true,
+    "atom": 14
+   }
+  ],
+  "media_print": true,
+  "page_map": {
+   "Motion Test": 1,
+   "Part I \u2014 Multiple Choice": 2,
+   "Part II \u2014 Long Answer": 3
+  },
+  "pdf": {
+   "page_count": 4,
+   "paper_w_px": 816.0,
+   "paper_h_px": 1056.0,
+   "pages": [
+    {
+     "index": 1,
+     "ink_bottom_px": 204.49999147916665,
+     "ink_top_px": 81.59960600001628,
+     "ink_area_px2": 46287.65327569156
+    },
+    {
+     "index": 2,
+     "ink_bottom_px": 943.2196872791781,
+     "ink_top_px": 42.99999820833333,
+     "ink_area_px2": 127642.32888626395
+    },
+    {
+     "index": 3,
+     "ink_bottom_px": 540.3714911287244,
+     "ink_top_px": 46.711511897891185,
+     "ink_area_px2": 41716.45029776201
+    },
+    {
+     "index": 4,
+     "ink_bottom_px": 82.37151021205727,
+     "ink_top_px": 46.71151189789058,
+     "ink_area_px2": 10703.278368518286
+    }
+   ],
+   "page_text": [
+    "Motion Test\nPhysics\nName\nBefore you start. Show the equation you start from, rearrange it for the unknown, and only then substitute\nnumbers.",
+    "Part I \u2014 Multiple Choice\n1. A cart moves along a track in situation 1. Which statement about its velocity is correct?\nA. Choice A for question 1.\nB. Choice B for question 1.\nC. Choice C for question 1.\nD. Choice D for question 1.\n2. A cart moves along a track in situation 2. Which statement about its velocity is correct?\nA. Choice A for question 2.\nB. Choice B for question 2.\nC. Choice C for question 2.\nD. Choice D for question 2.\n3. A cart moves along a track in situation 3. Which statement about its velocity is correct?\nA. Choice A for question 3.\nB. Choice B for question 3.\nC. Choice C for question 3.\nD. Choice D for question 3.\n4. A cart moves along a track in situation 4. Which statement about its velocity is correct?\nA. Choice A for question 4.\nB. Choice B for question 4.\nC. Choice C for question 4.\nD. Choice D for question 4.\n5. A cart moves along a track in situation 5. Which statement about its velocity is correct?\nA. Choice A for question 5.\nB. Choice B for question 5.\nC. Choice C for question 5.\nD. Choice D for question 5.\n6. A cart moves along a track in situation 6. Which statement about its velocity is correct?\nA. Choice A for question 6.\nB. Choice B for question 6.\nC. Choice C for question 6.\nD. Choice D for question 6.\n7. A cart moves along a track in situation 7. Which statement about its velocity is correct?\nA. Choice A for question 7.\nB. Choice B for question 7.\nC. Choice C for question 7.\nD. Choice D for question 7.",
+    "8. A cart moves along a track in situation 8. Which statement about its velocity is correct?\nA. Choice A for question 8.\nB. Choice B for question 8.\nC. Choice C for question 8.\nD. Choice D for question 8.\nPart II \u2014 Long Answer\n9. A cart starts from rest and speeds up at a constant rate. Find its velocity after 4.0 s and the\ndistance it covers.\n10. A cart starts from rest and speeds up at a constant rate. Find its velocity after 4.0 s and the\ndistance it covers.",
+    "11. A cart starts from rest and speeds up at a constant rate. Find its velocity after 4.0 s and the\ndistance it covers."
+   ]
+  }
+ },
+ "page_count": 4,
+ "page_content_h_px": 969.5999999999999,
+ "page_content_w_px": 729.5999999999999,
+ "body_font_px": 14.6667,
+ "pages": [
+  {
+   "index": 1,
+   "fill_ratio": 0.16635725193808443,
+   "slack_px": 808.3000085208332,
+   "ends_in_explicit_break": false,
+   "is_final": false
+  },
+  {
+   "index": 2,
+   "fill_ratio": 0.9282381263192844,
+   "slack_px": 69.5803127208219,
+   "ends_in_explicit_break": false,
+   "is_final": false
+  },
+  {
+   "index": 3,
+   "fill_ratio": 0.5127593761641135,
+   "slack_px": 472.4285088712755,
+   "ends_in_explicit_break": false,
+   "is_final": false
+  },
+  {
+   "index": 4,
+   "fill_ratio": 0.040399659872171284,
+   "slack_px": 930.4284897879427,
+   "ends_in_explicit_break": false,
+   "is_final": true
+  }
+ ],
+ "fonts_resolved": [],
+ "fonts_missing": [],
+ "chrome_version": "Chrome/154.0.8037.58",
+ "paper_w_px": 816.0,
+ "paper_h_px": 1056.0,
+ "raster_dpi": 150,
+ "chrome_path": "chrome",
+ "media_emulation": "cdp",
+ "page_margin_source": "css_page_rule"
+}

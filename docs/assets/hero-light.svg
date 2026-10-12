@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" role="img" aria-label="printfit: print checks for HTML worksheets, measured the way Chrome prints them">
+  <title>printfit</title>
+  <style>
+    text { font-family: ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; }
+    .bg { fill: #FBFAF7; }
+    .edge { fill: none; stroke: #E6E2D8; stroke-width: 2; }
+    .h1 { font-size: 68px; font-weight: 700; fill: #26241F; letter-spacing: -1px; }
+    .tag { font-size: 27px; fill: #26241F; }
+    .sub { font-size: 18px; fill: #6F6A60; }
+    .rule { fill: #C6892F; }
+    .grid { stroke: #E6E2D8; stroke-width: 1; }
+    .axis { stroke: #26241F; stroke-width: 2; fill: none; }
+    .tick { font-size: 16px; fill: #6F6A60; }
+    .lab { font-size: 17px; fill: #155A63; font-weight: 600; }
+    .vline { stroke: #C6892F; stroke-width: 5; fill: none; }
+    .head { fill: #C6892F; }
+    .dot { fill: #1C6E78; }
+  </style>
+  <rect class="bg" width="1280" height="400"/>
+  <rect class="edge" x="1" y="1" width="1278" height="398"/>
+  <text class="h1" x="72" y="150">printfit</text>
+  <rect class="rule" x="74" y="176" width="96" height="6"/>
+  <text class="tag" x="72" y="240">Print checks for HTML worksheets,</text>
+  <text class="tag" x="72" y="278">measured the way Chrome prints them.</text>
+  <text class="sub" x="72" y="334">Renders, measures, and tells you which element broke which rule.</text>
+  <g>
+    <text class="tick" x="840" y="338" text-anchor="middle">0</text>
+    <line class="grid" x1="920" y1="316" x2="920" y2="76"/>
+    <text class="tick" x="920" y="338" text-anchor="middle">1</text>
+    <line class="grid" x1="1000" y1="316" x2="1000" y2="76"/>
+    <text class="tick" x="1000" y="338" text-anchor="middle">2</text>
+    <line class="grid" x1="1080" y1="316" x2="1080" y2="76"/>
+    <text class="tick" x="1080" y="338" text-anchor="middle">3</text>
+    <line class="grid" x1="1160" y1="316" x2="1160" y2="76"/>
+    <text class="tick" x="1160" y="338" text-anchor="middle">4</text>
+    <text class="tick" x="828" y="321" text-anchor="end">0</text>
+    <line class="grid" x1="840" y1="236" x2="1170" y2="236"/>
+    <text class="tick" x="828" y="241" text-anchor="end">2</text>
+    <line class="grid" x1="840" y1="156" x2="1170" y2="156"/>
+    <text class="tick" x="828" y="161" text-anchor="end">4</text>
+    <line class="grid" x1="840" y1="76" x2="1170" y2="76"/>
+    <text class="tick" x="828" y="81" text-anchor="end">6</text>
+    <line class="axis" x1="840" y1="316" x2="1185" y2="316"/>
+    <line class="axis" x1="840" y1="316" x2="840" y2="64"/>
+    <text class="lab" x="1185" y="360" text-anchor="end">t (s)</text>
+    <text class="lab" x="828" y="52" text-anchor="start">v (m/s)</text>
+    <path class="vline" d="M 840 276 L 1140.5 120.1"/>
+    <path class="head" d="M 1160.0 110.0 L 1144.6 128.1 L 1136.3 112.1 Z"/>
+    <circle class="dot" cx="840" cy="276" r="6"/>
+  </g>
+</svg>

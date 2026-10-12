@@ -1,0 +1,40 @@
+[project]
+name = "printfit"
+version = "0.1.0"
+description = "Deterministic print-aesthetic checks for HTML documents destined for paper."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.12"
+dependencies = [
+    "pymupdf>=1.24",
+    "pdfplumber>=0.11",
+    "lxml>=6.1.3",
+    "pyyaml>=6.0.3",
+    "pillow>=12.3.0",
+    "websocket-client>=1.9.2",
+    "numpy>=2.5.2",
+    "ortools>=9.15.6755",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[project.scripts]
+printfit = "printfit.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/printfit"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16.5",
+]
+
+[tool.pytest.ini_options]
+filterwarnings = ["ignore::DeprecationWarning"]
+markers = ["browser: needs Chrome"]

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 468" width="1200" height="468" role="img" aria-label="printfit check reports a failing worksheet, then printfit fit produces a passing one">
+  <title>printfit before and after</title>
+  <style>
+    .pn { fill: #1B1A17; stroke: #34312B; stroke-width: 1; }
+    .m { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; fill: #E8E4DA; white-space: pre; }
+    .cmd { fill: #E0A850; } .dim { fill: #948F83; } .bad { fill: #E58A74; font-weight: 700; } .good { fill: #7CC6CF; font-weight: 700; }
+    .ttl { font-family: ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 20px; font-weight: 700; }
+  </style>
+  <rect class="pn" x="10" y="10" width="580" height="448" rx="6"/>
+  <text class="ttl" x="30" y="42" style="fill:#E58A74">Failing: printfit check</text>
+  <text class="m cmd" x="30" y="80" xml:space="preserve">$ printfit check prefix-worksheet.html \</text>
+  <text class="m cmd" x="30" y="102" xml:space="preserve">      --profile motion-graphs.yaml</text>
+  <text class="m dim" x="30" y="124" xml:space="preserve">  page 1  fill  79%   slack   200px   OK  (break)</text>
+  <text class="m dim" x="30" y="146" xml:space="preserve">  page 2  fill  84%   slack   153px   OK  (break)</text>
+  <text class="m dim" x="30" y="168" xml:space="preserve">  ...</text>
+  <text class="m dim" x="30" y="190" xml:space="preserve">  page 7  fill  58%   slack   404px   OK  (final)</text>
+  <text class="m bad" x="30" y="234" xml:space="preserve">  HARD  auto_height:svg.grid.g-pa</text>
+  <text class="m txt" x="30" y="256" xml:space="preserve">        height derives from the container</text>
+  <text class="m txt" x="30" y="278" xml:space="preserve">        (width:100%; height:auto); the figure is untunable</text>
+  <text class="m txt" x="30" y="300" xml:space="preserve">        fix: set an explicit height (&lt;= 2.02in)</text>
+  <text class="m bad" x="30" y="322" xml:space="preserve">  HARD  text_scale:svg.grid.g-pc   1.90 (limit 1.6)</text>
+  <text class="m txt" x="30" y="344" xml:space="preserve">        worst label realises 27.8px vs 14.67px body</text>
+  <text class="m dim" x="30" y="366" xml:space="preserve">  ...</text>
+  <text class="m bad" x="30" y="410" xml:space="preserve">  28 hard gates failed</text>
+  <text class="m bad" x="30" y="432" xml:space="preserve">  verdict: fail</text>
+  <rect class="pn" x="610" y="10" width="580" height="448" rx="6"/>
+  <text class="ttl" x="630" y="42" style="fill:#7CC6CF">Passing: printfit check</text>
+  <text class="m cmd" x="630" y="80" xml:space="preserve">$ printfit check horizontal-launch/worksheet.html</text>
+  <text class="m dim" x="630" y="124" xml:space="preserve">  page 1  fill  97%   slack    32px   OK  (break)</text>
+  <text class="m dim" x="630" y="146" xml:space="preserve">  page 2  fill  63%   slack   363px   OK  (break)</text>
+  <text class="m dim" x="630" y="168" xml:space="preserve">  page 3  fill  71%   slack   277px   OK  (final)</text>
+  <text class="m good" x="630" y="212" xml:space="preserve">  all hard gates pass</text>
+  <text class="m good" x="630" y="234" xml:space="preserve">  verdict: pass</text>
+</svg>

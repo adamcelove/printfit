@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+/out/
+corpus/*/render/
+!corpus/*/fixtures/rendered/
+corpus/*/out/**/*.png
+corpus/*/out/before/
+corpus/*/out/report.html
+eval/cache/
+eval/mutants/
+.claude/worktrees/

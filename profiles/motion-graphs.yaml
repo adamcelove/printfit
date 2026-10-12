@@ -1,0 +1,10 @@
+schema: 1
+name: motion-graphs
+documents:
+  - path: tests/fixtures/synthetic/fixed-worksheet.html
+    kind: worksheet
+roles:
+  grid: graph
+  g-pa: smallmultiple
+  g-nl: scale
+workspace_classes: [sp]

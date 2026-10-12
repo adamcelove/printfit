@@ -1,0 +1,10 @@
+schema: 1
+name: stuck-intent
+documents:
+  - path: tests/fixtures/t2-stuck/t2-stuck.html
+    kind: test
+workspace_classes: [sp]
+pages: 3
+section_pages:
+  "Part I": 1
+  "Part II": 2

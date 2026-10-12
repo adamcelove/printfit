@@ -1,0 +1,401 @@
+{
+ "schema": 1,
+ "printfit": "0.1.0",
+ "doc": "t2-stuck.html",
+ "profile": "t2-stuck-intent.yaml",
+ "verdict": "fail",
+ "hard_failed": 3,
+ "render": {
+  "page_count": 4,
+  "paper_w_px": 816.0,
+  "paper_h_px": 1056.0,
+  "page_content_h_px": 969.5999999999999,
+  "page_content_w_px": 729.5999999999999,
+  "page_margin_source": "css_page_rule",
+  "media_emulation": "cdp",
+  "body_font_px": 14.6667,
+  "raster_dpi": 150,
+  "chrome_path": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "chrome_version": "Chrome/154.0.8037.58",
+  "fonts_resolved": [],
+  "fonts_missing": [],
+  "page_map": {
+   "Motion Test": 1,
+   "Part I \u2014 Multiple Choice": 2,
+   "Part II \u2014 Long Answer": 3
+  },
+  "pdf_path": "render.pdf",
+  "page_png_paths": [
+   "page-1.png",
+   "page-2.png",
+   "page-3.png",
+   "page-4.png"
+  ]
+ },
+ "pages": [
+  {
+   "index": 1,
+   "fill_ratio": 0.16635725193808443,
+   "slack_px": 808.3000085208332,
+   "ends_in_explicit_break": false,
+   "is_final": false
+  },
+  {
+   "index": 2,
+   "fill_ratio": 0.9282381263192844,
+   "slack_px": 69.5803127208219,
+   "ends_in_explicit_break": false,
+   "is_final": false
+  },
+  {
+   "index": 3,
+   "fill_ratio": 0.5127593761641135,
+   "slack_px": 472.4285088712755,
+   "ends_in_explicit_break": false,
+   "is_final": false
+  },
+  {
+   "index": 4,
+   "fill_ratio": 0.040399659872171284,
+   "slack_px": 930.4284897879427,
+   "ends_in_explicit_break": false,
+   "is_final": true
+  }
+ ],
+ "skipped_checks": [],
+ "findings": [
+  {
+   "id": "page_count",
+   "severity": "hard",
+   "message": "document is 4 pages; profile requires 3",
+   "value": 4.0,
+   "threshold": 3.0,
+   "page": null,
+   "page_source": "pdf",
+   "selector": null,
+   "role": null,
+   "suggested_fix": null
+  },
+  {
+   "id": "section_page:Part I",
+   "severity": "hard",
+   "message": "section 'Part I' is on page 2; profile requires 1",
+   "value": 2.0,
+   "threshold": 1.0,
+   "page": 2,
+   "page_source": "pdf",
+   "selector": null,
+   "role": null,
+   "suggested_fix": null
+  },
+  {
+   "id": "section_page:Part II",
+   "severity": "hard",
+   "message": "section 'Part II' is on page 3; profile requires 2",
+   "value": 3.0,
+   "threshold": 2.0,
+   "page": 3,
+   "page_source": "pdf",
+   "selector": null,
+   "role": null,
+   "suggested_fix": null
+  },
+  {
+   "id": "fill_ratio:page-1",
+   "severity": "soft",
+   "message": "page 1 is 17% full; below the 80% comfort floor (band 88%-96%)",
+   "value": 0.166,
+   "threshold": 0.8,
+   "page": 1,
+   "page_source": "pdf",
+   "selector": null,
+   "role": null,
+   "suggested_fix": null
+  },
+  {
+   "id": "fill_ratio:page-3",
+   "severity": "soft",
+   "message": "page 3 is 51% full; below the 80% comfort floor (band 88%-96%)",
+   "value": 0.513,
+   "threshold": 0.8,
+   "page": 3,
+   "page_source": "pdf",
+   "selector": null,
+   "role": null,
+   "suggested_fix": null
+  },
+  {
+   "id": "print_color:.rubric",
+   "severity": "soft",
+   "message": ".rubric sets background #fafafa without print-color-adjust: exact; Chrome drops it on paper",
+   "value": null,
+   "threshold": null,
+   "page": null,
+   "page_source": null,
+   "selector": ".rubric",
+   "role": null,
+   "suggested_fix": "add print-color-adjust:exact to .rubric in @media print"
+  },
+  {
+   "id": "print_color:h2",
+   "severity": "soft",
+   "message": "h2 sets background var(--band) without print-color-adjust: exact; Chrome drops it on paper",
+   "value": null,
+   "threshold": null,
+   "page": null,
+   "page_source": null,
+   "selector": "h2",
+   "role": null,
+   "suggested_fix": "add print-color-adjust:exact to h2 in @media print"
+  },
+  {
+   "id": "page_slack:page-1",
+   "severity": "info",
+   "message": "page 1 slack 808px",
+   "value": 808.3,
+   "threshold": 12.0,
+   "page": 1,
+   "page_source": "pdf",
+   "selector": null,
+   "role": null,
+   "suggested_fix": null
+  },
+  {
+   "id": "page_slack:page-2",
+   "severity": "info",
+   "message": "page 2 slack 70px",
+   "value": 69.6,
+   "threshold": 12.0,
+   "page": 2,
+   "page_source": "pdf",
+   "selector": null,
+   "role": null,
+   "suggested_fix": null
+  },
+  {
+   "id": "page_slack:page-3",
+   "severity": "info",
+   "message": "page 3 slack 472px",
+   "value": 472.4,
+   "threshold": 12.0,
+   "page": 3,
+   "page_source": "pdf",
+   "selector": null,
+   "role": null,
+   "suggested_fix": null
+  },
+  {
+   "id": "page_slack:page-4",
+   "severity": "info",
+   "message": "page 4 slack 930px",
+   "value": 930.4,
+   "threshold": 12.0,
+   "page": 4,
+   "page_source": "pdf",
+   "selector": null,
+   "role": null,
+   "suggested_fix": null
+  }
+ ],
+ "diff": {
+  "new": [],
+  "fixed": [],
+  "changed": [],
+  "regressed": []
+ },
+ "why": [
+  {
+   "kind": "underfull",
+   "page": 1,
+   "fill": 0.16635725193808443,
+   "remaining_px": 808.3000085208332,
+   "moved_atom": "h2",
+   "moved_atom_dom_y": 175.9375,
+   "group": "div.mcblock",
+   "group_span_px": 1028.390625,
+   "message": "page 1 ends early at y 161 (17% full): Chrome moved h2 \"Part I \u2014 Multiple Choice\" (DOM y 176) to page 2 although 808px remained",
+   "cause": "keep-together group div.mcblock (spans 1028px incl. heading, break-inside: avoid) does not fit in 808px",
+   "suggestion": "consider: remove break-inside: avoid on div.mcblock, or break before h2 \"Part I \u2014 Multiple Choice\""
+  }
+ ],
+ "fingerprint": {
+  "h1": 1,
+  "h2": 2,
+  "svg": 0,
+  "qa": 0,
+  "text_len": 2164,
+  "svg_viewboxes": [],
+  "blocks": [
+   {
+    "path": "body>div.hdr",
+    "text_sha1": "61f3c7276a0e",
+    "n_children": 2
+   },
+   {
+    "path": "body>div.hdr>div>p.sub",
+    "text_sha1": "96b6180545f8",
+    "n_children": 0
+   },
+   {
+    "path": "body>div.rubric",
+    "text_sha1": "7f7fd3514b5e",
+    "n_children": 1
+   },
+   {
+    "path": "body>div.mcblock",
+    "text_sha1": "5f8bfa3b7d1d",
+    "n_children": 9
+   },
+   {
+    "path": "body>div.mcblock>div.mcq",
+    "text_sha1": "8f1012d7cacc",
+    "n_children": 2
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>p.q",
+    "text_sha1": "9302e5bafd98",
+    "n_children": 1
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>ul.opts",
+    "text_sha1": "0e67173a0086",
+    "n_children": 4
+   },
+   {
+    "path": "body>div.mcblock>div.mcq",
+    "text_sha1": "52cdc520bb3e",
+    "n_children": 2
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>p.q",
+    "text_sha1": "9c1ded1d8670",
+    "n_children": 1
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>ul.opts",
+    "text_sha1": "6494f2d06ff9",
+    "n_children": 4
+   },
+   {
+    "path": "body>div.mcblock>div.mcq",
+    "text_sha1": "53845fa79e2f",
+    "n_children": 2
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>p.q",
+    "text_sha1": "94374bc36059",
+    "n_children": 1
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>ul.opts",
+    "text_sha1": "a3b7d78692a8",
+    "n_children": 4
+   },
+   {
+    "path": "body>div.mcblock>div.mcq",
+    "text_sha1": "830344c957ca",
+    "n_children": 2
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>p.q",
+    "text_sha1": "b7733aacada2",
+    "n_children": 1
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>ul.opts",
+    "text_sha1": "5a9b68a157cb",
+    "n_children": 4
+   },
+   {
+    "path": "body>div.mcblock>div.mcq",
+    "text_sha1": "1fb94de13d70",
+    "n_children": 2
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>p.q",
+    "text_sha1": "c791062f6267",
+    "n_children": 1
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>ul.opts",
+    "text_sha1": "dd22fdc9f729",
+    "n_children": 4
+   },
+   {
+    "path": "body>div.mcblock>div.mcq",
+    "text_sha1": "d040a4cfa7b5",
+    "n_children": 2
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>p.q",
+    "text_sha1": "f57f19d1e101",
+    "n_children": 1
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>ul.opts",
+    "text_sha1": "115018c59036",
+    "n_children": 4
+   },
+   {
+    "path": "body>div.mcblock>div.mcq",
+    "text_sha1": "3520a5838163",
+    "n_children": 2
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>p.q",
+    "text_sha1": "e73590cd917f",
+    "n_children": 1
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>ul.opts",
+    "text_sha1": "7cb82f7e02d7",
+    "n_children": 4
+   },
+   {
+    "path": "body>div.mcblock>div.mcq",
+    "text_sha1": "c3e0d8876fad",
+    "n_children": 2
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>p.q",
+    "text_sha1": "fa7f3d487075",
+    "n_children": 1
+   },
+   {
+    "path": "body>div.mcblock>div.mcq>ul.opts",
+    "text_sha1": "2deca5da5bfb",
+    "n_children": 4
+   },
+   {
+    "path": "body>div.prob",
+    "text_sha1": "760580c581ab",
+    "n_children": 2
+   },
+   {
+    "path": "body>div.prob>p.q",
+    "text_sha1": "760580c581ab",
+    "n_children": 1
+   },
+   {
+    "path": "body>div.prob",
+    "text_sha1": "642ba7d585a9",
+    "n_children": 2
+   },
+   {
+    "path": "body>div.prob>p.q",
+    "text_sha1": "642ba7d585a9",
+    "n_children": 1
+   },
+   {
+    "path": "body>div.prob",
+    "text_sha1": "fa84be6baa3f",
+    "n_children": 2
+   },
+   {
+    "path": "body>div.prob>p.q",
+    "text_sha1": "fa84be6baa3f",
+    "n_children": 1
+   }
+  ]
+ }
+}
