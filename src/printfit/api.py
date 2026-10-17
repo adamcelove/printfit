@@ -9,7 +9,7 @@ import tempfile
 from . import profile as P
 from . import render as R
 from . import report as REP
-from .checks import run_all, structural
+from .checks import duplicate, run_all, structural
 from .checks.color import preflight_print_color
 from .checks.text_scale import preflight
 from .types import Finding, HarnessError, RenderArtifacts, Report
@@ -29,6 +29,7 @@ def check(html_path: str, profile_path: str | None = None, out_dir: str | None =
     findings, skipped = run_all(art, prof)
     findings += preflight(html_path, prof)
     findings += preflight_print_color(html_path)
+    findings += duplicate.run_html(html_path)
     fp = structural.fingerprint(html_path)
     prev_path = os.path.join(out_dir, "report.prev.json")
     if not no_diff and os.path.exists(prev_path):
@@ -66,7 +67,7 @@ def _as_delta(found: list[Finding]) -> list[Finding]:
 
 def preflight_only(html_path: str, profile_path: str | None = None) -> Report:
     prof = P.load(profile_path)
-    findings = preflight(html_path, prof) + preflight_print_color(html_path)
+    findings = preflight(html_path, prof) + preflight_print_color(html_path) + duplicate.run_html(html_path)
     fp = structural.fingerprint(html_path)
     findings.append(Finding(id="structural:fingerprint", severity="info",
                             message=f"h1 {fp['h1']}, h2 {fp['h2']}, svg {fp['svg']}, qa {fp['qa']}, "
