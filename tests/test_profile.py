@@ -31,3 +31,16 @@ def test_load_defaults(tmp_path):
     p = profile.load(str(f))
     assert p["fill"]["skip_final_page"] is True
     assert p["roles"] == {"grid": "graph"}
+
+
+def test_mark_roles_validated(tmp_path):
+    import pytest
+    from printfit import profile as P
+    from printfit.types import ProfileError
+    p = tmp_path / "p.yaml"
+    p.write_text("mark_roles:\n  ax: axis\n")
+    assert P.load(str(p))["mark_roles"] == {"ax": "axis"}
+    p.write_text("mark_roles:\n  ax: fence\n")
+    with pytest.raises(ProfileError, match="mark_roles.ax"):
+        P.load(str(p))
+    assert P.load(None)["mark_roles"] == {}

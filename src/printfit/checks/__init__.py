@@ -9,10 +9,11 @@ from ..types import HARD_GATES, Finding, RenderArtifacts  # noqa: F401
 def run_all(artifacts: RenderArtifacts, profile: dict
             ) -> tuple[list[Finding], list[str]]:
     """Run every measured check. Returns (findings, skipped_checks)."""
-    from . import aspect_ratio, figure_height, fonts, page_slack, text_scale
+    from . import aspect_ratio, figure_height, fonts, label_collision, page_slack, text_scale
     findings: list[Finding] = []
     skipped: list[str] = []
-    for mod in (text_scale, figure_height, aspect_ratio, page_slack, fonts):
+    for mod in (text_scale, figure_height, aspect_ratio, page_slack, fonts,
+                label_collision):
         findings.extend(mod.run(artifacts, profile))
     roles = profile.get("roles") or {}
     has_declared = bool(roles) or any(

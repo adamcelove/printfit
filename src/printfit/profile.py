@@ -6,11 +6,13 @@ import dataclasses
 
 import yaml
 
+from .marks import MARK_ROLES
 from .types import ROLE_LIMITS, FigRole, ProfileError, RoleLimits
 
 ALLOWED_KEYS = {"schema", "name", "documents", "roles", "role_limits",
                 "text_scale_exempt", "fill", "fonts", "golden", "pages",
-                "section_pages", "workspace_classes", "knobs", "composition"}
+                "section_pages", "workspace_classes", "knobs", "composition",
+                "mark_roles"}
 _VALID_ROLES = set(FigRole.__args__)
 
 
@@ -19,7 +21,7 @@ def load(path: str | None) -> dict:
         return {"roles": {}, "role_limits": {}, "text_scale_exempt": [],
                 "fill": {"enabled": True, "skip_final_page": True,
                          "skip_explicit_break_pages": True},
-                "fonts": {}, "documents": []}
+                "fonts": {}, "documents": [], "mark_roles": {}}
     with open(path, encoding="utf-8") as fh:
         data = yaml.safe_load(fh) or {}
     unknown = set(data) - ALLOWED_KEYS
@@ -28,6 +30,9 @@ def load(path: str | None) -> dict:
     for cls, role in (data.get("roles") or {}).items():
         if role not in _VALID_ROLES:
             raise ProfileError(f"{path}: roles.{cls}: unknown role {role!r}")
+    for cls, role in (data.get("mark_roles") or {}).items():
+        if role not in MARK_ROLES:
+            raise ProfileError(f"{path}: mark_roles.{cls}: unknown mark role {role!r}")
     for role, over in (data.get("role_limits") or {}).items():
         if role not in _VALID_ROLES:
             raise ProfileError(f"{path}: role_limits.{role}: unknown role")
@@ -38,6 +43,7 @@ def load(path: str | None) -> dict:
     base.update(data)
     base["fill"] = {**load(None)["fill"], **(data.get("fill") or {})}
     base["roles"] = data.get("roles") or {}
+    base["mark_roles"] = data.get("mark_roles") or {}
     base["role_limits"] = data.get("role_limits") or {}
     base["text_scale_exempt"] = data.get("text_scale_exempt") or []
     return base
