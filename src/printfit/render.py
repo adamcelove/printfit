@@ -250,15 +250,16 @@ GEOMETRY_JS = r"""
     const d = shape.getAttribute('d') || '';
     if (t === 'path' && !/[CcSsQqTtAa]/.test(d)) {
       const tok = d.match(/[MmLlHhVvZz]|[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/g) || [], out = [];
-      let cmd = 'M', x = 0, y = 0, i = 0;
+      let cmd = 'M', x = 0, y = 0, x0 = 0, y0 = 0, i = 0;
       while (i < tok.length) {
-        if (/[A-Za-z]/.test(tok[i])) { cmd = tok[i++]; if (cmd === 'Z' || cmd === 'z') continue; }
+        if (/[A-Za-z]/.test(tok[i])) { cmd = tok[i++]; if (cmd === 'Z' || cmd === 'z') { x = x0; y = y0; continue; } }
         const n = () => parseFloat(tok[i++]), rel = cmd === cmd.toLowerCase();
         const C = cmd.toUpperCase();
         if (C === 'H') x = (rel ? x : 0) + n();
         else if (C === 'V') y = (rel ? y : 0) + n();
         else if (C === 'M' || C === 'L') { const a = n(), b = n(); x = (rel ? x : 0) + a; y = (rel ? y : 0) + b; }
         else break;
+        if (C === 'M') { x0 = x; y0 = y; }
         if (!isNaN(x) && !isNaN(y)) out.push([x, y]);
         if (cmd === 'M') cmd = 'L'; else if (cmd === 'm') cmd = 'l';
       }
