@@ -1,6 +1,7 @@
 """The one function the CLI, the evaluator and the fitter share."""
 from __future__ import annotations
 
+import dataclasses
 import json
 import os
 import tempfile
@@ -39,13 +40,28 @@ def check(html_path: str, profile_path: str | None = None, out_dir: str | None =
         same_doc = os.path.basename(prev_js.get("doc") or "") == os.path.basename(html_path)
         prev_fp = prev_js.get("fingerprint")
         if same_doc and prev_fp:
-            findings += structural.compare(prev_fp, fp)
+            findings += _as_delta(structural.compare(prev_fp, fp))
     verdict = "fail" if any(f.failed for f in findings) else "pass"
     rep = Report(doc=html_path, profile=profile_path, verdict=verdict,
                  findings=findings, artifacts=art, skipped_checks=skipped)
     rep.why = REP.compute_why(art, findings)
     rep.fingerprint = fp
     return rep
+
+
+_DUP = "content was duplicated or lost by an edit"
+_EXPECTED = "changed since the last run (expected if you edited content)"
+
+
+def _as_delta(found: list[Finding]) -> list[Finding]:
+    """Run-to-run structural drift is expected after an intended edit, so in
+    check mode it is reported, never gated. fit and evaluate call
+    structural.compare directly and keep it hard."""
+    return [dataclasses.replace(
+        f, id=f.id.replace("structural:", "structural_delta:", 1), severity="soft",
+        message=(f.message.replace(_DUP, _EXPECTED) if _DUP in f.message
+                 else f.message + " (since the last run; expected if you edited content)"))
+        for f in found]
 
 
 def preflight_only(html_path: str, profile_path: str | None = None) -> Report:

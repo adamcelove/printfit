@@ -36,12 +36,24 @@ def test_fingerprint_compare_skipped_for_different_document(tmp_path):
     assert not any(f.id.startswith("structural:") and f.severity == "hard" for f in rep.findings)
 
 
-def test_fingerprint_compare_runs_for_same_document(tmp_path):
+def test_fingerprint_delta_is_soft_for_same_document(tmp_path):
     art = _load_artifacts()
     other_fp = {"h1": 99, "h2": 99, "svg": 0, "qa": 0, "text_len": 1, "blocks": []}
     _write_prev(tmp_path, os.path.basename(FIXTURE_HTML), other_fp)
     rep = api.check(FIXTURE_HTML, out_dir=str(tmp_path), artifacts=art)
-    assert any(f.id.startswith("structural:") and f.severity == "hard" for f in rep.findings)
+    deltas = [f for f in rep.findings if f.id.startswith("structural_delta:")]
+    assert deltas, "a changed fingerprint must still be reported"
+    assert all(f.severity == "soft" for f in deltas)
+    assert all("expected if you edited content" in f.message for f in deltas)
+    assert not any(f.id.startswith("structural:") and f.severity == "hard" for f in rep.findings)
+
+
+def test_fingerprint_delta_never_fails_the_run(tmp_path):
+    art = _load_artifacts()
+    other_fp = {"h1": 99, "h2": 99, "svg": 0, "qa": 0, "text_len": 1, "blocks": []}
+    _write_prev(tmp_path, os.path.basename(FIXTURE_HTML), other_fp)
+    rep = api.check(FIXTURE_HTML, out_dir=str(tmp_path), artifacts=art)
+    assert not any(f.failed for f in rep.findings if f.id.startswith("structural_delta:"))
 
 
 def test_no_diff_skips_fingerprint_compare_even_for_same_document(tmp_path):
