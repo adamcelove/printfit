@@ -229,11 +229,130 @@ GEOMETRY_JS = r"""
                  empty: !el.textContent.trim(), atom: atomEls.findIndex(a => a === el || a.contains(el))}));
   function sel_of_qa(el) { const q = el.closest('.qa, [data-qid]'); if (!q) return null;
     const i = [...document.querySelectorAll('.qa, [data-qid]')].indexOf(q); return i >= 0 ? qa[i].selector : null; }
+  // --- figure_marks: label, stroke and arrowhead geometry for the collision
+  // gates. Page px (print media) plus root viewBox units for builder fix hints.
+  const apply = (m, x, y) => [m.a * x + m.c * y + m.e, m.b * x + m.d * y + m.f];
+  const toPage = (m, x, y) => { const [X, Y] = apply(m, x, y); return [X + sx, Y + sy]; };
+  const vecOf = (m, x, y) => { const v = [m.a * x + m.c * y, m.b * x + m.d * y], n = Math.hypot(v[0], v[1]) || 1; return [v[0] / n, v[1] / n]; };
+  const visibleMark = el => {
+    if (el.closest('defs, marker, clipPath, mask, symbol, pattern')) return false;
+    const s = cs(el);
+    if (s.display === 'none' || s.visibility === 'hidden' || parseFloat(s.opacity) === 0) return false;
+    const r = el.getBoundingClientRect(); return r.width > 0 || r.height > 0;
+  };
+  const roleOf = el => { const h = el.closest('[data-pf-role]'); return h ? h.getAttribute('data-pf-role') : null; };
+  const okOf = el => !!el.closest('[data-pf-ok]');
+  const markerOf = (el, prop) => { const m = /url\(\s*["']?#([^"')]+)/.exec(cs(el)[prop] || ''); return m ? document.getElementById(m[1]) : null; };
+  const shapePts = shape => {
+    const t = shape.tagName.toLowerCase();
+    if (t === 'polygon' || t === 'polyline') return [...shape.points].map(p => [p.x, p.y]);
+    // straight-line paths (the usual marker shape): exact vertices, so the tip is not sampled off
+    const d = shape.getAttribute('d') || '';
+    if (t === 'path' && !/[CcSsQqTtAa]/.test(d)) {
+      const tok = d.match(/[MmLlHhVvZz]|[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/g) || [], out = [];
+      let cmd = 'M', x = 0, y = 0, i = 0;
+      while (i < tok.length) {
+        if (/[A-Za-z]/.test(tok[i])) { cmd = tok[i++]; if (cmd === 'Z' || cmd === 'z') continue; }
+        const n = () => parseFloat(tok[i++]), rel = cmd === cmd.toLowerCase();
+        const C = cmd.toUpperCase();
+        if (C === 'H') x = (rel ? x : 0) + n();
+        else if (C === 'V') y = (rel ? y : 0) + n();
+        else if (C === 'M' || C === 'L') { const a = n(), b = n(); x = (rel ? x : 0) + a; y = (rel ? y : 0) + b; }
+        else break;
+        if (!isNaN(x) && !isNaN(y)) out.push([x, y]);
+        if (cmd === 'M') cmd = 'L'; else if (cmd === 'm') cmd = 'l';
+      }
+      if (out.length >= 3) return out;
+    }
+    if (!shape.getTotalLength) return [];
+    const L = shape.getTotalLength(), out = [];
+    for (let i = 0; i <= 32; i++) { const p = shape.getPointAtLength(L * i / 32); out.push([p.x, p.y]); }
+    return out;
+  };
+  const placeHead = (el, mk, end, L, strokeUser, m, rel) => {
+    const shape = mk.querySelector('path, polygon, polyline'); if (!shape) return null;
+    const raw = shapePts(shape); if (raw.length < 3) return null;
+    const d = Math.min(0.5, L / 2);
+    const at = s => { const p = el.getPointAtLength(Math.max(0, Math.min(L, s))); return [p.x, p.y]; };
+    const P = end === 'end' ? at(L) : at(0), Q = end === 'end' ? at(L - d) : at(d);
+    let ang = end === 'end' ? Math.atan2(P[1] - Q[1], P[0] - Q[0]) : Math.atan2(Q[1] - P[1], Q[0] - P[0]);
+    const orient = mk.getAttribute('orient') || '0';
+    if (orient === 'auto-start-reverse' && end === 'start') ang += Math.PI;
+    else if (orient !== 'auto' && orient !== 'auto-start-reverse') ang = (parseFloat(orient) || 0) * Math.PI / 180;
+    const k = (mk.getAttribute('markerUnits') || 'strokeWidth') === 'userSpaceOnUse' ? 1 : strokeUser;
+    const vb = mk.viewBox && mk.viewBox.baseVal && mk.viewBox.baseVal.width ? mk.viewBox.baseVal : null;
+    const mw = parseFloat(mk.getAttribute('markerWidth') || '3'), mh = parseFloat(mk.getAttribute('markerHeight') || '3');
+    const vs = vb ? Math.min(mw / vb.width, mh / vb.height) : 1;
+    const rx = parseFloat(mk.getAttribute('refX') || '0'), ry = parseFloat(mk.getAttribute('refY') || '0');
+    const ca = Math.cos(ang), sa = Math.sin(ang);
+    const toU = ([x, y]) => { const u = (x - rx) * vs * k, v = (y - ry) * vs * k; return [P[0] + u * ca - v * sa, P[1] + u * sa + v * ca]; };
+    const polyU = raw.map(toU);
+    const proj = polyU.map(([x, y]) => (x - P[0]) * ca + (y - P[1]) * sa);
+    const lo = Math.min(...proj), hi = Math.max(...proj);
+    const baseU = [P[0] + lo * ca, P[1] + lo * sa], tipU = [P[0] + hi * ca, P[1] + hi * sa];
+    const dir = vecOf(m, ca, sa), dirUser = vecOf(rel, ca, sa);
+    const poly = polyU.map(([x, y]) => toPage(m, x, y));
+    const base = toPage(m, ...baseU), tip = toPage(m, ...tipU), end_ = toPage(m, ...P);
+    const perp = [-dir[1], dir[0]];
+    const offs = poly.map(([x, y]) => (x - base[0]) * perp[0] + (y - base[1]) * perp[1]);
+    const along = poly.map(([x, y]) => (x - base[0]) * dir[0] + (y - base[1]) * dir[1]);
+    const baseOffs = offs.filter((_, i) => along[i] <= 0.5);
+    const pxPerUnit = vs * k * Math.hypot(m.a, m.b);
+    return {marker_id: mk.id, ref_x: rx, marker_base_x: Math.min(...raw.map(p => p[0])),
+      marker_px_per_unit: pxPerUnit, poly, tip, base_mid: base,
+      base_halfwidth: baseOffs.length ? (Math.max(...baseOffs) - Math.min(...baseOffs)) / 2 : 0,
+      length: Math.hypot(tip[0] - base[0], tip[1] - base[1]), dir, shaft_end: end_,
+      tip_user: apply(rel, ...tipU), base_mid_user: apply(rel, ...baseU), dir_user: dirUser,
+      shaft_end_user: apply(rel, ...P)};
+  };
+  const figure_marks = [];
+  figEls.forEach((svg, fi) => {
+    if (svg.tagName.toLowerCase() !== 'svg') return;
+    const rootM = svg.getScreenCTM(); if (!rootM) return;
+    const inv = rootM.inverse();
+    const texts = [], strokes = [], heads = [];
+    svg.querySelectorAll('text').forEach((t, i) => {
+      if (!visibleMark(t)) return;
+      const b = t.getBBox(); if (!b.width || !b.height) return;
+      const m = t.getScreenCTM();
+      texts.push({id: 't' + i, text: t.textContent.replace(/\s+/g, ' ').trim().slice(0, 40),
+        classes: [...t.classList], ok: okOf(t),
+        box: [[b.x, b.y], [b.x + b.width, b.y], [b.x + b.width, b.y + b.height], [b.x, b.y + b.height]].map(([x, y]) => toPage(m, x, y))});
+    });
+    svg.querySelectorAll('line, polyline, polygon, path, rect, circle, ellipse').forEach((el, i) => {
+      if (!visibleMark(el)) return;
+      const s = cs(el); if (s.stroke === 'none' || !px(s.strokeWidth)) return;
+      const m = el.getScreenCTM(), rel = inv.multiply(m), scale = Math.hypot(m.a, m.b);
+      const tag = el.tagName.toLowerCase();
+      let ptsU;
+      if (tag === 'line') ptsU = [[el.x1.baseVal.value, el.y1.baseVal.value], [el.x2.baseVal.value, el.y2.baseVal.value]];
+      else if (tag === 'polyline' || tag === 'polygon') { ptsU = [...el.points].map(p => [p.x, p.y]); if (tag === 'polygon' && ptsU.length) ptsU.push(ptsU[0]); }
+      else { const L = el.getTotalLength(), n = Math.max(2, Math.min(1000, Math.ceil(L * scale / 2) + 1)); ptsU = [];
+        for (let j = 0; j < n; j++) { const p = el.getPointAtLength(L * j / (n - 1)); ptsU.push([p.x, p.y]); } }
+      const id = 's' + i;
+      strokes.push({id, tag, classes: [...el.classList], data_role: roleOf(el), ok: okOf(el),
+        width_px: px(s.strokeWidth) * scale, dashed: !!s.strokeDasharray && s.strokeDasharray !== 'none',
+        cap: s.strokeLinecap, pts: ptsU.map(([x, y]) => toPage(m, x, y)), pts_user: ptsU.map(([x, y]) => apply(rel, x, y))});
+      const L = el.getTotalLength ? el.getTotalLength() : 0;
+      if (L > 0) for (const [end, prop] of [['end', 'markerEnd'], ['start', 'markerStart']]) {
+        const mk = markerOf(el, prop); if (!mk) continue;
+        const h = placeHead(el, mk, end, L, px(s.strokeWidth), m, rel);
+        if (h) heads.push({stroke_id: id, end, ...h});
+      }
+    });
+    const total = strokes.reduce((a, st) => a + st.pts.length, 0);
+    if (total > 4000) { const k = Math.ceil(total / 4000);
+      const keep = a => a.filter((_, j) => j % k === 0 || j === a.length - 1);
+      for (const st of strokes) if (st.pts.length > 2) { st.pts = keep(st.pts); st.pts_user = keep(st.pts_user); } }
+    const r = rectOf(svg);
+    figure_marks.push({figure: figures[fi].selector, rect: [r.x, r.y, r.w, r.h],
+      user_per_px: 1 / Math.hypot(rootM.a, rootM.b), texts, strokes, heads});
+  });
   return {body_font_px: px(cs(document.body).fontSize), doc_client_w: document.documentElement.clientWidth,
     doc_scroll_h: document.documentElement.scrollHeight,
     body_rect: rectOf(document.body), page_rule: pageRule,
     fonts: {declared: [...declared], resolved, missing},
-    figures, qa, headings, blocks, lines, atoms, inline_heights,
+    figures, qa, headings, blocks, lines, atoms, inline_heights, figure_marks,
     media_print: matchMedia('print').matches};
 })()
 """

@@ -1,0 +1,1751 @@
+{
+ "pdf_path": "render.pdf",
+ "page_png_paths": [
+  "page-1.png",
+  "page-2.png"
+ ],
+ "dom_geometry": {
+  "body_font_px": 14.6667,
+  "doc_client_w": 720,
+  "doc_scroll_h": 1452,
+  "body_rect": {
+   "x": 0,
+   "y": 0,
+   "w": 720,
+   "h": 1440
+  },
+  "page_rule": {
+   "marginTop": "0.5in",
+   "marginRight": "0.5in",
+   "marginBottom": "0.5in",
+   "marginLeft": "0.5in",
+   "margin": "0.5in",
+   "size": "letter"
+  },
+  "fonts": {
+   "declared": [
+    "Helvetica",
+    "Arial"
+   ],
+   "resolved": [
+    "Helvetica",
+    "Arial"
+   ],
+   "missing": []
+  },
+  "figures": [
+   {
+    "selector": "svg.f-tt-overlap",
+    "tag": "svg",
+    "classes": [
+     "f-tt-overlap"
+    ],
+    "data_fig_role": null,
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "w": 400,
+     "h": 120
+    },
+    "viewbox": {
+     "w": 400,
+     "h": 120
+    },
+    "scale": 1,
+    "parent_w": 720,
+    "css_height_is_auto": false,
+    "css_width_is_pct": false,
+    "preserve_aspect_ratio": null,
+    "texts": [
+     {
+      "class": "",
+      "computed_px": 14,
+      "realised_px": 14
+     }
+    ]
+   },
+   {
+    "selector": "svg.f-tt-clear",
+    "tag": "svg",
+    "classes": [
+     "f-tt-clear"
+    ],
+    "data_fig_role": null,
+    "rect": {
+     "x": 0,
+     "y": 132,
+     "w": 400,
+     "h": 120
+    },
+    "viewbox": {
+     "w": 400,
+     "h": 120
+    },
+    "scale": 1,
+    "parent_w": 720,
+    "css_height_is_auto": false,
+    "css_width_is_pct": false,
+    "preserve_aspect_ratio": null,
+    "texts": [
+     {
+      "class": "",
+      "computed_px": 14,
+      "realised_px": 14
+     }
+    ]
+   },
+   {
+    "selector": "svg.f-line-through",
+    "tag": "svg",
+    "classes": [
+     "f-line-through"
+    ],
+    "data_fig_role": null,
+    "rect": {
+     "x": 0,
+     "y": 264,
+     "w": 400,
+     "h": 120
+    },
+    "viewbox": {
+     "w": 400,
+     "h": 120
+    },
+    "scale": 1,
+    "parent_w": 720,
+    "css_height_is_auto": false,
+    "css_width_is_pct": false,
+    "preserve_aspect_ratio": null,
+    "texts": [
+     {
+      "class": "",
+      "computed_px": 14,
+      "realised_px": 14
+     }
+    ]
+   },
+   {
+    "selector": "svg.f-line-clear",
+    "tag": "svg",
+    "classes": [
+     "f-line-clear"
+    ],
+    "data_fig_role": null,
+    "rect": {
+     "x": 0,
+     "y": 396,
+     "w": 400,
+     "h": 120
+    },
+    "viewbox": {
+     "w": 400,
+     "h": 120
+    },
+    "scale": 1,
+    "parent_w": 720,
+    "css_height_is_auto": false,
+    "css_width_is_pct": false,
+    "preserve_aspect_ratio": null,
+    "texts": [
+     {
+      "class": "",
+      "computed_px": 14,
+      "realised_px": 14
+     }
+    ]
+   },
+   {
+    "selector": "svg.f-rotated",
+    "tag": "svg",
+    "classes": [
+     "f-rotated"
+    ],
+    "data_fig_role": null,
+    "rect": {
+     "x": 0,
+     "y": 528,
+     "w": 400,
+     "h": 120
+    },
+    "viewbox": {
+     "w": 400,
+     "h": 120
+    },
+    "scale": 1,
+    "parent_w": 720,
+    "css_height_is_auto": false,
+    "css_width_is_pct": false,
+    "preserve_aspect_ratio": null,
+    "texts": [
+     {
+      "class": "",
+      "computed_px": 14,
+      "realised_px": 14
+     }
+    ]
+   },
+   {
+    "selector": "svg.f-subscript",
+    "tag": "svg",
+    "classes": [
+     "f-subscript"
+    ],
+    "data_fig_role": null,
+    "rect": {
+     "x": 0,
+     "y": 660,
+     "w": 400,
+     "h": 120
+    },
+    "viewbox": {
+     "w": 400,
+     "h": 120
+    },
+    "scale": 1,
+    "parent_w": 720,
+    "css_height_is_auto": false,
+    "css_width_is_pct": false,
+    "preserve_aspect_ratio": null,
+    "texts": [
+     {
+      "class": "",
+      "computed_px": 14,
+      "realised_px": 14
+     }
+    ]
+   },
+   {
+    "selector": "svg.f-head",
+    "tag": "svg",
+    "classes": [
+     "f-head"
+    ],
+    "data_fig_role": null,
+    "rect": {
+     "x": 0,
+     "y": 792,
+     "w": 400,
+     "h": 120
+    },
+    "viewbox": {
+     "w": 400,
+     "h": 120
+    },
+    "scale": 1,
+    "parent_w": 720,
+    "css_height_is_auto": false,
+    "css_width_is_pct": false,
+    "preserve_aspect_ratio": null,
+    "texts": [
+     {
+      "class": "",
+      "computed_px": 14,
+      "realised_px": 14
+     }
+    ]
+   },
+   {
+    "selector": "svg.f-ok",
+    "tag": "svg",
+    "classes": [
+     "f-ok"
+    ],
+    "data_fig_role": null,
+    "rect": {
+     "x": 0,
+     "y": 924,
+     "w": 400,
+     "h": 120
+    },
+    "viewbox": {
+     "w": 400,
+     "h": 120
+    },
+    "scale": 1,
+    "parent_w": 720,
+    "css_height_is_auto": false,
+    "css_width_is_pct": false,
+    "preserve_aspect_ratio": null,
+    "texts": [
+     {
+      "class": "",
+      "computed_px": 14,
+      "realised_px": 14
+     }
+    ]
+   },
+   {
+    "selector": "svg.f-grid",
+    "tag": "svg",
+    "classes": [
+     "f-grid"
+    ],
+    "data_fig_role": null,
+    "rect": {
+     "x": 0,
+     "y": 1056,
+     "w": 400,
+     "h": 120
+    },
+    "viewbox": {
+     "w": 400,
+     "h": 120
+    },
+    "scale": 1,
+    "parent_w": 720,
+    "css_height_is_auto": false,
+    "css_width_is_pct": false,
+    "preserve_aspect_ratio": null,
+    "texts": [
+     {
+      "class": "",
+      "computed_px": 14,
+      "realised_px": 14
+     }
+    ]
+   },
+   {
+    "selector": "svg.f-role-axis",
+    "tag": "svg",
+    "classes": [
+     "f-role-axis"
+    ],
+    "data_fig_role": null,
+    "rect": {
+     "x": 0,
+     "y": 1188,
+     "w": 400,
+     "h": 120
+    },
+    "viewbox": {
+     "w": 400,
+     "h": 120
+    },
+    "scale": 1,
+    "parent_w": 720,
+    "css_height_is_auto": false,
+    "css_width_is_pct": false,
+    "preserve_aspect_ratio": null,
+    "texts": [
+     {
+      "class": "",
+      "computed_px": 14,
+      "realised_px": 14
+     }
+    ]
+   },
+   {
+    "selector": "svg.f-tick",
+    "tag": "svg",
+    "classes": [
+     "f-tick"
+    ],
+    "data_fig_role": null,
+    "rect": {
+     "x": 0,
+     "y": 1320,
+     "w": 400,
+     "h": 120
+    },
+    "viewbox": {
+     "w": 400,
+     "h": 120
+    },
+    "scale": 1,
+    "parent_w": 720,
+    "css_height_is_auto": false,
+    "css_width_is_pct": false,
+    "preserve_aspect_ratio": null,
+    "texts": [
+     {
+      "class": "",
+      "computed_px": 14,
+      "realised_px": 14
+     }
+    ]
+   }
+  ],
+  "qa": [],
+  "headings": [],
+  "blocks": [
+   {
+    "selector": "svg.f-tt-overlap",
+    "tag": "svg",
+    "classes": [
+     "f-tt-overlap"
+    ],
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "w": 400,
+     "h": 120
+    },
+    "kind": "figure",
+    "font_px": 14.6667,
+    "line_height_px": 17.60004,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "svg.f-tt-clear",
+    "tag": "svg",
+    "classes": [
+     "f-tt-clear"
+    ],
+    "rect": {
+     "x": 0,
+     "y": 132,
+     "w": 400,
+     "h": 120
+    },
+    "kind": "figure",
+    "font_px": 14.6667,
+    "line_height_px": 17.60004,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "svg.f-line-through",
+    "tag": "svg",
+    "classes": [
+     "f-line-through"
+    ],
+    "rect": {
+     "x": 0,
+     "y": 264,
+     "w": 400,
+     "h": 120
+    },
+    "kind": "figure",
+    "font_px": 14.6667,
+    "line_height_px": 17.60004,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "svg.f-line-clear",
+    "tag": "svg",
+    "classes": [
+     "f-line-clear"
+    ],
+    "rect": {
+     "x": 0,
+     "y": 396,
+     "w": 400,
+     "h": 120
+    },
+    "kind": "figure",
+    "font_px": 14.6667,
+    "line_height_px": 17.60004,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "svg.f-rotated",
+    "tag": "svg",
+    "classes": [
+     "f-rotated"
+    ],
+    "rect": {
+     "x": 0,
+     "y": 528,
+     "w": 400,
+     "h": 120
+    },
+    "kind": "figure",
+    "font_px": 14.6667,
+    "line_height_px": 17.60004,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "svg.f-subscript",
+    "tag": "svg",
+    "classes": [
+     "f-subscript"
+    ],
+    "rect": {
+     "x": 0,
+     "y": 660,
+     "w": 400,
+     "h": 120
+    },
+    "kind": "figure",
+    "font_px": 14.6667,
+    "line_height_px": 17.60004,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "svg.f-head",
+    "tag": "svg",
+    "classes": [
+     "f-head"
+    ],
+    "rect": {
+     "x": 0,
+     "y": 792,
+     "w": 400,
+     "h": 120
+    },
+    "kind": "figure",
+    "font_px": 14.6667,
+    "line_height_px": 17.60004,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "svg.f-ok",
+    "tag": "svg",
+    "classes": [
+     "f-ok"
+    ],
+    "rect": {
+     "x": 0,
+     "y": 924,
+     "w": 400,
+     "h": 120
+    },
+    "kind": "figure",
+    "font_px": 14.6667,
+    "line_height_px": 17.60004,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "svg.f-grid",
+    "tag": "svg",
+    "classes": [
+     "f-grid"
+    ],
+    "rect": {
+     "x": 0,
+     "y": 1056,
+     "w": 400,
+     "h": 120
+    },
+    "kind": "figure",
+    "font_px": 14.6667,
+    "line_height_px": 17.60004,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "svg.f-role-axis",
+    "tag": "svg",
+    "classes": [
+     "f-role-axis"
+    ],
+    "rect": {
+     "x": 0,
+     "y": 1188,
+     "w": 400,
+     "h": 120
+    },
+    "kind": "figure",
+    "font_px": 14.6667,
+    "line_height_px": 17.60004,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   },
+   {
+    "selector": "svg.f-tick",
+    "tag": "svg",
+    "classes": [
+     "f-tick"
+    ],
+    "rect": {
+     "x": 0,
+     "y": 1320,
+     "w": 400,
+     "h": 120
+    },
+    "kind": "figure",
+    "font_px": 14.6667,
+    "line_height_px": 17.60004,
+    "data_role": null,
+    "data_for": null,
+    "qa": null
+   }
+  ],
+  "lines": [],
+  "atoms": [
+   {
+    "selector": "svg.f-tt-overlap",
+    "tag": "svg",
+    "classes": [
+     "f-tt-overlap"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "w": 400,
+     "h": 120
+    },
+    "avoid": false,
+    "fig_floor": 0,
+    "text": "FnetFg",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [
+     "svg.f-tt-overlap"
+    ],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "svg.f-tt-clear",
+    "tag": "svg",
+    "classes": [
+     "f-tt-clear"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 0,
+     "y": 132,
+     "w": 400,
+     "h": 120
+    },
+    "avoid": false,
+    "fig_floor": 0,
+    "text": "FnetFg",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [
+     "svg.f-tt-clear"
+    ],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "svg.f-line-through",
+    "tag": "svg",
+    "classes": [
+     "f-line-through"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 0,
+     "y": 264,
+     "w": 400,
+     "h": 120
+    },
+    "avoid": false,
+    "fig_floor": 0,
+    "text": "v",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [
+     "svg.f-line-through"
+    ],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "svg.f-line-clear",
+    "tag": "svg",
+    "classes": [
+     "f-line-clear"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 0,
+     "y": 396,
+     "w": 400,
+     "h": 120
+    },
+    "avoid": false,
+    "fig_floor": 0,
+    "text": "v",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [
+     "svg.f-line-clear"
+    ],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "svg.f-rotated",
+    "tag": "svg",
+    "classes": [
+     "f-rotated"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 0,
+     "y": 528,
+     "w": 400,
+     "h": 120
+    },
+    "avoid": false,
+    "fig_floor": 0,
+    "text": "velocity",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [
+     "svg.f-rotated"
+    ],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "svg.f-subscript",
+    "tag": "svg",
+    "classes": [
+     "f-subscript"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 0,
+     "y": 660,
+     "w": 400,
+     "h": 120
+    },
+    "avoid": false,
+    "fig_floor": 0,
+    "text": "vf",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [
+     "svg.f-subscript"
+    ],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "svg.f-head",
+    "tag": "svg",
+    "classes": [
+     "f-head"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 0,
+     "y": 792,
+     "w": 400,
+     "h": 120
+    },
+    "avoid": false,
+    "fig_floor": 0,
+    "text": "a",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [
+     "svg.f-head"
+    ],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "svg.f-ok",
+    "tag": "svg",
+    "classes": [
+     "f-ok"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 0,
+     "y": 924,
+     "w": 400,
+     "h": 120
+    },
+    "avoid": false,
+    "fig_floor": 0,
+    "text": "v",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [
+     "svg.f-ok"
+    ],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "svg.f-grid",
+    "tag": "svg",
+    "classes": [
+     "f-grid"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 0,
+     "y": 1056,
+     "w": 400,
+     "h": 120
+    },
+    "avoid": false,
+    "fig_floor": 0,
+    "text": "v",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [
+     "svg.f-grid"
+    ],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "svg.f-role-axis",
+    "tag": "svg",
+    "classes": [
+     "f-role-axis"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 0,
+     "y": 1188,
+     "w": 400,
+     "h": 120
+    },
+    "avoid": false,
+    "fig_floor": 0,
+    "text": "v",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [
+     "svg.f-role-axis"
+    ],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   },
+   {
+    "selector": "svg.f-tick",
+    "tag": "svg",
+    "classes": [
+     "f-tick"
+    ],
+    "rows": [],
+    "rect": {
+     "x": 0,
+     "y": 1320,
+     "w": 400,
+     "h": 120
+    },
+    "avoid": false,
+    "fig_floor": 0,
+    "text": "0",
+    "heading": null,
+    "heading_level": null,
+    "break_before": null,
+    "figures": [
+     "svg.f-tick"
+    ],
+    "spaces": [],
+    "qa": false,
+    "group": null
+   }
+  ],
+  "inline_heights": [],
+  "figure_marks": [
+   {
+    "figure": "svg.f-tt-overlap",
+    "rect": [
+     0,
+     0,
+     400,
+     120
+    ],
+    "user_per_px": 1,
+    "texts": [
+     {
+      "id": "t0",
+      "text": "Fnet",
+      "classes": [],
+      "ok": false,
+      "box": [
+       [
+        40,
+        47
+       ],
+       [
+        68.015625,
+        47
+       ],
+       [
+        68.015625,
+        63
+       ],
+       [
+        40,
+        63
+       ]
+      ]
+     },
+     {
+      "id": "t1",
+      "text": "Fg",
+      "classes": [],
+      "ok": false,
+      "box": [
+       [
+        52,
+        49
+       ],
+       [
+        68.34375,
+        49
+       ],
+       [
+        68.34375,
+        65.0966796875
+       ],
+       [
+        52,
+        65.0966796875
+       ]
+      ]
+     }
+    ],
+    "strokes": [],
+    "heads": []
+   },
+   {
+    "figure": "svg.f-tt-clear",
+    "rect": [
+     0,
+     132,
+     400,
+     120
+    ],
+    "user_per_px": 1,
+    "texts": [
+     {
+      "id": "t0",
+      "text": "Fnet",
+      "classes": [],
+      "ok": false,
+      "box": [
+       [
+        40,
+        179
+       ],
+       [
+        68.015625,
+        179
+       ],
+       [
+        68.015625,
+        195
+       ],
+       [
+        40,
+        195
+       ]
+      ]
+     },
+     {
+      "id": "t1",
+      "text": "Fg",
+      "classes": [],
+      "ok": false,
+      "box": [
+       [
+        120,
+        179
+       ],
+       [
+        136.34375,
+        179
+       ],
+       [
+        136.34375,
+        195.0966796875
+       ],
+       [
+        120,
+        195.0966796875
+       ]
+      ]
+     }
+    ],
+    "strokes": [],
+    "heads": []
+   },
+   {
+    "figure": "svg.f-line-through",
+    "rect": [
+     0,
+     264,
+     400,
+     120
+    ],
+    "user_per_px": 1,
+    "texts": [
+     {
+      "id": "t0",
+      "text": "v",
+      "classes": [],
+      "ok": false,
+      "box": [
+       [
+        100,
+        311
+       ],
+       [
+        107,
+        311
+       ],
+       [
+        107,
+        327
+       ],
+       [
+        100,
+        327
+       ]
+      ]
+     }
+    ],
+    "strokes": [
+     {
+      "id": "s0",
+      "tag": "line",
+      "classes": [
+       "vec"
+      ],
+      "data_role": null,
+      "ok": false,
+      "width_px": 2.4,
+      "dashed": false,
+      "cap": "butt",
+      "pts": [
+       [
+        20,
+        319
+       ],
+       [
+        300,
+        319
+       ]
+      ],
+      "pts_user": [
+       [
+        20,
+        55
+       ],
+       [
+        300,
+        55
+       ]
+      ]
+     }
+    ],
+    "heads": []
+   },
+   {
+    "figure": "svg.f-line-clear",
+    "rect": [
+     0,
+     396,
+     400,
+     120
+    ],
+    "user_per_px": 1,
+    "texts": [
+     {
+      "id": "t0",
+      "text": "v",
+      "classes": [],
+      "ok": false,
+      "box": [
+       [
+        100,
+        443
+       ],
+       [
+        107,
+        443
+       ],
+       [
+        107,
+        459
+       ],
+       [
+        100,
+        459
+       ]
+      ]
+     }
+    ],
+    "strokes": [
+     {
+      "id": "s0",
+      "tag": "line",
+      "classes": [
+       "vec"
+      ],
+      "data_role": null,
+      "ok": false,
+      "width_px": 2.4,
+      "dashed": false,
+      "cap": "butt",
+      "pts": [
+       [
+        20,
+        471
+       ],
+       [
+        300,
+        471
+       ]
+      ],
+      "pts_user": [
+       [
+        20,
+        75
+       ],
+       [
+        300,
+        75
+       ]
+      ]
+     }
+    ],
+    "heads": []
+   },
+   {
+    "figure": "svg.f-rotated",
+    "rect": [
+     0,
+     528,
+     400,
+     120
+    ],
+    "user_per_px": 1,
+    "texts": [
+     {
+      "id": "t0",
+      "text": "velocity",
+      "classes": [],
+      "ok": false,
+      "box": [
+       [
+        47,
+        588
+       ],
+       [
+        47,
+        541.3125
+       ],
+       [
+        63.0009765625,
+        541.3125
+       ],
+       [
+        63.0009765625,
+        588
+       ]
+      ]
+     }
+    ],
+    "strokes": [
+     {
+      "id": "s0",
+      "tag": "line",
+      "classes": [
+       "vec"
+      ],
+      "data_role": null,
+      "ok": false,
+      "width_px": 2.4,
+      "dashed": false,
+      "cap": "butt",
+      "pts": [
+       [
+        20,
+        568
+       ],
+       [
+        100,
+        568
+       ]
+      ],
+      "pts_user": [
+       [
+        20,
+        40
+       ],
+       [
+        100,
+        40
+       ]
+      ]
+     }
+    ],
+    "heads": []
+   },
+   {
+    "figure": "svg.f-subscript",
+    "rect": [
+     0,
+     660,
+     400,
+     120
+    ],
+    "user_per_px": 1,
+    "texts": [
+     {
+      "id": "t0",
+      "text": "vf",
+      "classes": [],
+      "ok": false,
+      "box": [
+       [
+        100,
+        707
+       ],
+       [
+        109.78125,
+        707
+       ],
+       [
+        109.78125,
+        730
+       ],
+       [
+        100,
+        730
+       ]
+      ]
+     }
+    ],
+    "strokes": [
+     {
+      "id": "s0",
+      "tag": "line",
+      "classes": [
+       "vec"
+      ],
+      "data_role": null,
+      "ok": false,
+      "width_px": 2.4,
+      "dashed": false,
+      "cap": "butt",
+      "pts": [
+       [
+        20,
+        729
+       ],
+       [
+        300,
+        729
+       ]
+      ],
+      "pts_user": [
+       [
+        20,
+        69
+       ],
+       [
+        300,
+        69
+       ]
+      ]
+     }
+    ],
+    "heads": []
+   },
+   {
+    "figure": "svg.f-head",
+    "rect": [
+     0,
+     792,
+     400,
+     120
+    ],
+    "user_per_px": 1,
+    "texts": [
+     {
+      "id": "t0",
+      "text": "a",
+      "classes": [],
+      "ok": false,
+      "box": [
+       [
+        203,
+        875
+       ],
+       [
+        210.796875,
+        875
+       ],
+       [
+        210.796875,
+        891
+       ],
+       [
+        203,
+        891
+       ]
+      ]
+     }
+    ],
+    "strokes": [
+     {
+      "id": "s0",
+      "tag": "line",
+      "classes": [
+       "vec"
+      ],
+      "data_role": null,
+      "ok": false,
+      "width_px": 2.4,
+      "dashed": false,
+      "cap": "butt",
+      "pts": [
+       [
+        20,
+        882
+       ],
+       [
+        200,
+        882
+       ]
+      ],
+      "pts_user": [
+       [
+        20,
+        90
+       ],
+       [
+        200,
+        90
+       ]
+      ]
+     }
+    ],
+    "heads": [
+     {
+      "stroke_id": "s0",
+      "end": "end",
+      "marker_id": "ah",
+      "ref_x": 0,
+      "marker_base_x": 0,
+      "marker_px_per_unit": 1,
+      "poly": [
+       [
+        200,
+        878
+       ],
+       [
+        210,
+        882
+       ],
+       [
+        200,
+        886
+       ]
+      ],
+      "tip": [
+       210,
+       882
+      ],
+      "base_mid": [
+       200,
+       882
+      ],
+      "base_halfwidth": 4,
+      "length": 10,
+      "dir": [
+       1,
+       0
+      ],
+      "shaft_end": [
+       200,
+       882
+      ],
+      "tip_user": [
+       210,
+       90
+      ],
+      "base_mid_user": [
+       200,
+       90
+      ],
+      "dir_user": [
+       1,
+       0
+      ],
+      "shaft_end_user": [
+       200,
+       90
+      ]
+     }
+    ]
+   },
+   {
+    "figure": "svg.f-ok",
+    "rect": [
+     0,
+     924,
+     400,
+     120
+    ],
+    "user_per_px": 1,
+    "texts": [
+     {
+      "id": "t0",
+      "text": "v",
+      "classes": [],
+      "ok": true,
+      "box": [
+       [
+        100,
+        971
+       ],
+       [
+        107,
+        971
+       ],
+       [
+        107,
+        987
+       ],
+       [
+        100,
+        987
+       ]
+      ]
+     }
+    ],
+    "strokes": [
+     {
+      "id": "s0",
+      "tag": "line",
+      "classes": [
+       "vec"
+      ],
+      "data_role": null,
+      "ok": false,
+      "width_px": 2.4,
+      "dashed": false,
+      "cap": "butt",
+      "pts": [
+       [
+        20,
+        979
+       ],
+       [
+        300,
+        979
+       ]
+      ],
+      "pts_user": [
+       [
+        20,
+        55
+       ],
+       [
+        300,
+        55
+       ]
+      ]
+     }
+    ],
+    "heads": []
+   },
+   {
+    "figure": "svg.f-grid",
+    "rect": [
+     0,
+     1056,
+     400,
+     120
+    ],
+    "user_per_px": 1,
+    "texts": [
+     {
+      "id": "t0",
+      "text": "v",
+      "classes": [],
+      "ok": false,
+      "box": [
+       [
+        100,
+        1103
+       ],
+       [
+        107,
+        1103
+       ],
+       [
+        107,
+        1119
+       ],
+       [
+        100,
+        1119
+       ]
+      ]
+     }
+    ],
+    "strokes": [
+     {
+      "id": "s0",
+      "tag": "line",
+      "classes": [
+       "gl"
+      ],
+      "data_role": null,
+      "ok": false,
+      "width_px": 1,
+      "dashed": false,
+      "cap": "butt",
+      "pts": [
+       [
+        10,
+        1111
+       ],
+       [
+        390,
+        1111
+       ]
+      ],
+      "pts_user": [
+       [
+        10,
+        55
+       ],
+       [
+        390,
+        55
+       ]
+      ]
+     }
+    ],
+    "heads": []
+   },
+   {
+    "figure": "svg.f-role-axis",
+    "rect": [
+     0,
+     1188,
+     400,
+     120
+    ],
+    "user_per_px": 1,
+    "texts": [
+     {
+      "id": "t0",
+      "text": "v",
+      "classes": [],
+      "ok": false,
+      "box": [
+       [
+        100,
+        1235
+       ],
+       [
+        107,
+        1235
+       ],
+       [
+        107,
+        1251
+       ],
+       [
+        100,
+        1251
+       ]
+      ]
+     }
+    ],
+    "strokes": [
+     {
+      "id": "s0",
+      "tag": "line",
+      "classes": [
+       "vec"
+      ],
+      "data_role": "axis",
+      "ok": false,
+      "width_px": 2.4,
+      "dashed": false,
+      "cap": "butt",
+      "pts": [
+       [
+        20,
+        1243
+       ],
+       [
+        150,
+        1243
+       ]
+      ],
+      "pts_user": [
+       [
+        20,
+        55
+       ],
+       [
+        150,
+        55
+       ]
+      ]
+     }
+    ],
+    "heads": []
+   },
+   {
+    "figure": "svg.f-tick",
+    "rect": [
+     0,
+     1320,
+     400,
+     120
+    ],
+    "user_per_px": 1,
+    "texts": [
+     {
+      "id": "t0",
+      "text": "0",
+      "classes": [],
+      "ok": false,
+      "box": [
+       [
+        97,
+        1369
+       ],
+       [
+        104.796875,
+        1369
+       ],
+       [
+        104.796875,
+        1385
+       ],
+       [
+        97,
+        1385
+       ]
+      ]
+     }
+    ],
+    "strokes": [
+     {
+      "id": "s0",
+      "tag": "line",
+      "classes": [
+       "gl"
+      ],
+      "data_role": null,
+      "ok": false,
+      "width_px": 1,
+      "dashed": false,
+      "cap": "butt",
+      "pts": [
+       [
+        100,
+        1370
+       ],
+       [
+        100,
+        1376
+       ]
+      ],
+      "pts_user": [
+       [
+        100,
+        50
+       ],
+       [
+        100,
+        56
+       ]
+      ]
+     }
+    ],
+    "heads": []
+   }
+  ],
+  "media_print": true,
+  "page_map": {},
+  "pdf": {
+   "page_count": 2,
+   "paper_w_px": 816.0,
+   "paper_h_px": 1056.0,
+   "pages": [
+    {
+     "index": 1,
+     "ink_bottom_px": 939.2196874458447,
+     "ink_top_px": 97.21972252917809,
+     "ink_area_px2": 2406.1892426842132
+    },
+    {
+     "index": 2,
+     "ink_bottom_px": 509.2197053625114,
+     "ink_top_px": 97.21972252917809,
+     "ink_area_px2": 403.0058250561783
+    }
+   ],
+   "page_text": [
+    "FnFegt\nFnet Fg\nv\nv\nyticolev\nv\nf\na",
+    "v\nv\nv\n0"
+   ]
+  }
+ },
+ "page_count": 2,
+ "page_content_h_px": 960.0,
+ "page_content_w_px": 720.0,
+ "body_font_px": 14.6667,
+ "pages": [
+  {
+   "index": 1,
+   "fill_ratio": 0.9283538410894215,
+   "slack_px": 68.78031255415533,
+   "ends_in_explicit_break": false,
+   "is_final": false
+  },
+  {
+   "index": 2,
+   "fill_ratio": 0.48043719308594934,
+   "slack_px": 498.7802946374886,
+   "ends_in_explicit_break": false,
+   "is_final": true
+  }
+ ],
+ "fonts_resolved": [
+  "Helvetica",
+  "Arial"
+ ],
+ "fonts_missing": [],
+ "chrome_version": "Chrome/155.0.8059.80",
+ "paper_w_px": 816.0,
+ "paper_h_px": 1056.0,
+ "raster_dpi": 150,
+ "chrome_path": "chrome",
+ "media_emulation": "cdp",
+ "page_margin_source": "css_page_rule"
+}
