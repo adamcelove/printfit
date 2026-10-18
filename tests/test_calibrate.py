@@ -98,3 +98,32 @@ def test_duplicate_needs_a_label_to_pass():
     assert C.dup_meets_bar({"real": 1, "real_caught": 1, "false": 0, "false_flagged": 0})
     assert not C.dup_meets_bar({"real": 1, "real_caught": 0, "false": 0, "false_flagged": 0})
     assert not C.dup_meets_bar({"real": 1, "real_caught": 1, "false": 1, "false_flagged": 1})
+
+
+def test_corpus_survives_dangling_symlink_and_keys_with_svg(tmp_path):
+    root = tmp_path / "root"
+    _print_html(root / "ok.html", svg=True)
+    _print_html(root / "ws-key.html", svg=True)
+    _print_html(root / "answer-key-2.html", svg=True)
+    (root / "dangling.html").symlink_to(tmp_path / "missing-target.html")
+    got = [p.name for p in C.corpus([str(root)], reports=str(tmp_path / "none"), builder_dirs=())]
+    assert got == ["ok.html"]
+
+
+def test_corpus_reports_filtered_and_builder_dirs(tmp_path):
+    root, bdir, reports = tmp_path / "root", tmp_path / "tools", tmp_path / "reports"
+    _print_html(root / "far.html")
+    bdir.mkdir()
+    (bdir / "build-far.py").write_text("OUT = 'sub/far.html'")
+    good = _print_html(tmp_path / "src" / "good.html")
+    bad = [_print_html(tmp_path / "scratchpad" / "bak.html"),
+           _print_html(tmp_path / "printfit" / "out" / "r" / "report.html"),
+           _print_html(tmp_path / "src" / "x-key.html")]
+    notes = tmp_path / "src" / "notes.txt"
+    notes.write_text("x")
+    for n, d in enumerate([good, notes, *bad]):
+        (reports / str(n)).mkdir(parents=True)
+        (reports / str(n) / "report.json").write_text(json.dumps({"doc": str(d)}))
+    got = sorted(p.name for p in C.corpus([str(root)], reports=str(reports), builder_dirs=[str(bdir)]))
+    assert got == ["far.html", "good.html"]
+    assert [p.name for p in C.corpus([str(root)], reports=str(reports), builder_dirs=())] == ["good.html"]

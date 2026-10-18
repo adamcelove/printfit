@@ -33,6 +33,7 @@ from printfit.checks import arrow_shaft, duplicate, label_collision
 
 OUT = Path("out/calibration")
 PRINTFIT_OUT = "~/projects/printfit/out"
+BUILDER_DIRS = ("~/projects/knowledge-base/scripts",)
 DEFAULT_ROOT = "~/projects/knowledge-base/curriculum"
 KEY_RX = re.compile(r"(^|[^a-z])key([^a-z]|$)|answer-key|key-variant", re.I)
 SKIP_PARTS = ("/printfit/out/", "/node_modules/", "/site/", "/scratchpad/")
@@ -47,8 +48,28 @@ FALSE_PER_20 = 1          # promotion bar for the geometry gates
 GEOMETRY_GATES = {"label_collision": label_collision, "arrow_shaft": arrow_shaft}
 
 
-def _has_builder(p: Path) -> bool:
-    return any(p.name in b.read_text(encoding="utf-8", errors="ignore") for b in p.parent.glob("*.py"))
+def _skipped(p: Path) -> bool:
+    return any(x in str(p) or x in str(p.resolve()) for x in SKIP_PARTS) or bool(KEY_RX.search(p.name))
+
+
+def _read(p: Path) -> str | None:
+    try:
+        return p.read_text(encoding="utf-8", errors="ignore") if p.is_file() else None
+    except OSError:
+        return None
+
+
+def _builder_targets(roots, builder_dirs) -> set[str]:
+    """HTML basenames mentioned by any builder script under the roots or builder dirs."""
+    names: set[str] = set()
+    for root in [*roots, *builder_dirs]:
+        for py in Path(root).expanduser().rglob("*.py"):
+            if any(x in str(py) for x in SKIP_PARTS) or "/.venv/" in str(py):
+                continue
+            text = _read(py)
+            if text:
+                names |= {Path(m).name for m in re.findall(r"[\w./~-]+\.html", text)}
+    return names
 
 
 def _reported_docs(reports) -> list[Path]:
@@ -62,20 +83,21 @@ def _reported_docs(reports) -> list[Path]:
             doc = doc.get("path")
         if isinstance(doc, str) and doc:
             p = Path(doc).expanduser()
-            if p.is_file() and not KEY_RX.search(p.name):
+            if p.suffix == ".html" and p.is_file() and not _skipped(p):
                 docs.append(p)
     return docs
 
 
-def corpus(roots, reports=PRINTFIT_OUT):
+def corpus(roots, reports=PRINTFIT_OUT, builder_dirs=BUILDER_DIRS):
     """Printables with an SVG or a builder script, plus the hook's reported sources."""
+    built = _builder_targets(roots, builder_dirs)
     found: dict[Path, Path] = {}
     for root in roots:
         for p in Path(root).expanduser().rglob("*.html"):
-            if any(x in str(p) for x in SKIP_PARTS) or KEY_RX.search(p.name):
+            if _skipped(p):
                 continue
-            text = p.read_text(encoding="utf-8", errors="ignore")
-            if re.search(r"@page|@media print", text) and ("<svg" in text or _has_builder(p)):
+            text = _read(p)
+            if text and re.search(r"@page|@media print", text) and ("<svg" in text or p.name in built):
                 found.setdefault(p.resolve(), p)
     for p in _reported_docs(reports):
         found.setdefault(p.resolve(), p)
