@@ -12,7 +12,8 @@ def test_corpus_skips_keys_and_non_printables(tmp_path):
     (tmp_path / "ws-key.html").write_text("<style>@page{}</style>")
     (tmp_path / "answer-key.html").write_text("<style>@page{}</style>")
     (tmp_path / "screen.html").write_text("<p>no print css</p>")
-    assert [p.name for p in C.corpus([str(tmp_path)], reports=str(tmp_path / "none"))] == ["ws.html"]
+    assert [p.name for p in C.corpus([str(tmp_path)], reports=str(tmp_path / "none"),
+                                     builder_dirs=())] == ["ws.html"]
 
 
 def test_slug_is_stable_and_unique(tmp_path):
@@ -66,7 +67,7 @@ def test_corpus_spec_sources(tmp_path):
                       ("d", str(other / "missing.html"))]:
         (reports / name).mkdir(parents=True)
         (reports / name / "report.json").write_text(json.dumps({"doc": doc}))
-    got = [p.name for p in C.corpus([str(root)], reports=str(reports))]
+    got = [p.name for p in C.corpus([str(root)], reports=str(reports), builder_dirs=())]
     assert sorted(got) == ["built.html", "ext.html", "svg.html"]
     assert len(got) == len(set(got))
 
@@ -127,3 +128,22 @@ def test_corpus_reports_filtered_and_builder_dirs(tmp_path):
     got = sorted(p.name for p in C.corpus([str(root)], reports=str(reports), builder_dirs=[str(bdir)]))
     assert got == ["far.html", "good.html"]
     assert [p.name for p in C.corpus([str(root)], reports=str(reports), builder_dirs=())] == ["good.html"]
+
+
+def test_corpus_generic_basenames_need_a_local_or_folder_named_builder(tmp_path):
+    root, tools = tmp_path / "root", tmp_path / "tools"
+    _print_html(root / "x-solutions" / "index.html")
+    _print_html(root / "hw-solutions" / "index.html", svg=True)
+    _print_html(root / "unit-3" / "index.html")             # generic, unrelated builder only
+    _print_html(root / "ch02-pages" / "index.html")         # builder names folder/basename
+    _print_html(root / "local" / "worksheet.html")
+    (root / "local" / "make.py").write_text("open('worksheet.html', 'w')")
+    _print_html(root / "wk" / "week-9-homework.html")       # distinctive, far builder
+    _print_html(root / "sheets" / "_helper.html", svg=True)
+    tools.mkdir()
+    (tools / "hub.py").write_text("open('out/index.html', 'w')")
+    (tools / "pages.py").write_text("OUT = 'site/ch02-pages/index.html'")
+    (tools / "wk.py").write_text("OUT = 'week-9-homework.html'")
+    got = sorted(str(p.relative_to(root)) for p in
+                 C.corpus([str(root)], reports=str(tmp_path / "none"), builder_dirs=[str(tools)]))
+    assert got == ["ch02-pages/index.html", "local/worksheet.html", "wk/week-9-homework.html"]

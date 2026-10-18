@@ -36,6 +36,8 @@ PRINTFIT_OUT = "~/projects/printfit/out"
 BUILDER_DIRS = ("~/projects/knowledge-base/scripts",)
 DEFAULT_ROOT = "~/projects/knowledge-base/curriculum"
 KEY_RX = re.compile(r"(^|[^a-z])key([^a-z]|$)|answer-key|key-variant", re.I)
+SOLUTION_RX = re.compile(r"(^|[^a-z])solutions?([^a-z]|$)", re.I)
+GENERIC_NAMES = {"index.html", "homework.html", "worksheet.html", "quiz.html", "test.html", "notes.html"}
 SKIP_PARTS = ("/printfit/out/", "/node_modules/", "/site/", "/scratchpad/")
 SAMPLE = 60
 PAD_PX = 24
@@ -49,7 +51,8 @@ GEOMETRY_GATES = {"label_collision": label_collision, "arrow_shaft": arrow_shaft
 
 
 def _skipped(p: Path) -> bool:
-    return any(x in str(p) or x in str(p.resolve()) for x in SKIP_PARTS) or bool(KEY_RX.search(p.name))
+    return (any(x in str(p) or x in str(p.resolve()) for x in SKIP_PARTS) or bool(KEY_RX.search(p.name))
+            or p.name.startswith("_") or any(SOLUTION_RX.search(part) for part in p.parts))
 
 
 def _read(p: Path) -> str | None:
@@ -60,16 +63,25 @@ def _read(p: Path) -> str | None:
 
 
 def _builder_targets(roots, builder_dirs) -> set[str]:
-    """HTML basenames mentioned by any builder script under the roots or builder dirs."""
+    """HTML paths named by builder scripts: bare basenames, folder/basename pairs, and dir:basename."""
     names: set[str] = set()
     for root in [*roots, *builder_dirs]:
         for py in Path(root).expanduser().rglob("*.py"):
             if any(x in str(py) for x in SKIP_PARTS) or "/.venv/" in str(py):
                 continue
             text = _read(py)
-            if text:
-                names |= {Path(m).name for m in re.findall(r"[\w./~-]+\.html", text)}
+            for m in re.findall(r"[\w./~-]+\.html", text or ""):
+                parts = Path(m).parts
+                names |= {parts[-1], f"{py.parent.resolve()}:{parts[-1]}"}
+                if len(parts) > 1:
+                    names.add("/".join(parts[-2:]))
     return names
+
+
+def _is_built(p: Path, built: set[str]) -> bool:
+    # A generic basename counts only from a script in its own dir or one naming folder/basename.
+    return ((p.name not in GENERIC_NAMES and p.name in built) or f"{p.parent.name}/{p.name}" in built
+            or f"{p.parent.resolve()}:{p.name}" in built)
 
 
 def _reported_docs(reports) -> list[Path]:
@@ -97,7 +109,7 @@ def corpus(roots, reports=PRINTFIT_OUT, builder_dirs=BUILDER_DIRS):
             if _skipped(p):
                 continue
             text = _read(p)
-            if text and re.search(r"@page|@media print", text) and ("<svg" in text or p.name in built):
+            if text and re.search(r"@page|@media print", text) and ("<svg" in text or _is_built(p, built)):
                 found.setdefault(p.resolve(), p)
     for p in _reported_docs(reports):
         found.setdefault(p.resolve(), p)
