@@ -3,23 +3,22 @@ document alone.
 
 The structural fingerprint compares two runs, which in check mode fires on
 every intended edit. Duplication has a signature visible in one document:
-a sizable block whose text appears twice, the same figure twice in a row,
-or question numbers that repeat or skip. Loss has no such signature; the
+the same figure twice in a row, or question numbers that repeat or skip.
+A rule for any repeated block of text was dropped after calibration
+(2026-10-17): teacher materials repeat choice lists, rubrics and diagram
+scaffolds on purpose, and 16 of 17 labeled findings were intended. Loss has no such signature; the
 soft structural_delta finding still reports it.
 """
 from __future__ import annotations
 
-import hashlib
 import re
 
 from lxml import etree
 from lxml import html as lxml_html
 
 from ..types import HARD_GATES, Finding
-from .structural import _BLOCK_TAGS, _seg
 
 NAME = "duplicate_content"
-MIN_DUP_CHARS = 40
 QNUM_CLASSES = {"qnum", "q-num", "num"}
 _QNUM = re.compile(r"^\s*(\d+)\s*[.)]?\s*$")
 
@@ -42,38 +41,7 @@ def run_html(html_path: str) -> list[Finding]:
         doc = lxml_html.fromstring(fh.read())
     for bad in doc.xpath("//style|//script"):
         bad.drop_tree()
-    return _repeated_blocks(doc) + _adjacent_figures(doc) + _numbering(doc)
-
-
-def _repeated_blocks(doc) -> list[Finding]:
-    out: list[Finding] = []
-    first: dict[str, object] = {}
-    reported: list = []
-    for el in doc.iter():
-        if not isinstance(el.tag, str) or el.tag not in _BLOCK_TAGS:
-            continue
-        if not (el.get("class") or "").strip():
-            continue
-        if any(r in el.iterancestors() for r in reported):
-            continue
-        t = _text(el)
-        if len(t) < MIN_DUP_CHARS:
-            continue
-        key = hashlib.sha1(t.encode("utf-8")).hexdigest()
-        prior = first.get(key)
-        if prior is None:
-            first[key] = el
-            continue
-        if prior in el.iterancestors() or el in prior.iterancestors():
-            continue  # a wrapper and its only child share text; not a repeat
-        reported.append(el)
-        out.append(Finding(
-            id=f"{NAME}:block:{_seg(el)}", severity=_severity(),
-            message=f"block {_seg(el)} in '{_section(el)}' repeats the text of an earlier "
-                    f"block in '{_section(prior)}': \"{t[:60]}...\"",
-            selector=_seg(el),
-            suggested_fix="delete the repeated block, or change one copy if both are intended"))
-    return out
+    return _adjacent_figures(doc) + _numbering(doc)
 
 
 def _adjacent_figures(doc) -> list[Finding]:

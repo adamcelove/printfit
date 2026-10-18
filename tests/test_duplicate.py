@@ -14,21 +14,9 @@ def ids(findings, kind):
     return [f for f in findings if f.id.startswith(f"duplicate_content:{kind}")]
 
 
-def test_repeated_block_reported_once_at_outermost(tmp_path):
-    f = duplicate.run_html(_doc(tmp_path, "<h2>Part 1</h2>" + BLOCK + BLOCK))
-    blocks = ids(f, "block")
-    assert len(blocks) == 1
-    assert "div.qa" in blocks[0].id
-    assert "Part 1" in blocks[0].message
-
-
-def test_short_repeats_are_allowed(tmp_path):
-    rep = '<p class="hint">Show your work.</p>'
-    assert ids(duplicate.run_html(_doc(tmp_path, rep * 3)), "block") == []
-
-
-def test_wrapper_and_only_child_are_not_a_repeat(tmp_path):
-    assert ids(duplicate.run_html(_doc(tmp_path, BLOCK)), "block") == []
+def test_repeated_text_blocks_are_not_flagged(tmp_path):
+    # the repeated-block rule was dropped after calibration: repeats were intended 16 times in 17
+    assert duplicate.run_html(_doc(tmp_path, f"<h2>Part 1</h2>{BLOCK}<h2>Part 2</h2>{BLOCK}")) == []
 
 
 def test_back_to_back_identical_svgs(tmp_path):
@@ -61,5 +49,6 @@ def test_numbering_restarts_per_section_and_ignores_non_integers(tmp_path):
 
 
 def test_soft_until_promoted(tmp_path):
-    f = duplicate.run_html(_doc(tmp_path, BLOCK + BLOCK))
+    svg = '<svg viewBox="0 0 10 10"><line x1="0" y1="0" x2="10" y2="10"/></svg>'
+    f = duplicate.run_html(_doc(tmp_path, svg + svg))
     assert f and all(x.severity == "soft" for x in f)
