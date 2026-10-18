@@ -115,6 +115,23 @@ what changed.
 `aspect_ratio` and `text_scale` are hard gates despite arriving as aesthetic
 complaints: both are exactly computable, and both are ship-blockers on paper.
 
+In `check`, the structural invariants compare against the previous run of the
+same document, so an intended edit changes them. Those differences are reported
+as soft `structural_delta` findings; `fit` still treats any structural change as
+a hard failure.
+
+| Gate | Catches | Status |
+|---|---|---|
+| `label_collision` | an SVG label overlapping another label, a line, an axis, or an arrowhead | hard |
+| `arrow_shaft` | a shaft that shows around its arrowhead, or stops short of it; the fix gives the marker `refX` and shaft end that keep the tip in place | hard |
+| `duplicate_content` | a figure repeated back to back by an edit; question numbers that repeat or skip | soft until calibrated |
+
+Labels may sit on gridlines and tick marks, but not on axes. Gridlines and axes
+are recognized by common class names (`gl`, `grid`, `ax`, `axis`, ...) and
+otherwise by shape; to say so explicitly, use `data-pf-role="axis|gridline|tick"`
+or a profile `mark_roles: {class: role}` map. Mark an intended overlap with
+`data-pf-ok` on the element or a parent.
+
 ## CLI reference
 
 ### `printfit check <html>`
