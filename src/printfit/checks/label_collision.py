@@ -17,7 +17,7 @@ TEXT_OVERLAP_PX = 1.0
 TEXT_INSET_PX = 1.0
 STROKE_EPS_PX = 0.05
 CLEARANCE_PX = 1.0
-IGNORED_ROLES = {"axis", "gridline", "tick"}
+IGNORED_ROLES = {"gridline", "tick"}   # axes are obstacles: a label on an axis hurts reading; on a gridline it does not
 
 
 def _poly(pts) -> G.Poly:

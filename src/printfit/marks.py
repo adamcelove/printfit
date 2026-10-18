@@ -8,6 +8,11 @@ MARK_ROLES = ("axis", "gridline", "tick", "mark")
 GRID_SPAN_FRAC = 0.80
 TICK_MAX_PX = 8.0
 ALIGN_TOL_PX = 0.5
+# Class names the corpus's builders use, so the hook's profile-less runs get
+# roles right. Calibration 2026-10-17: grid plots leave label margins, so their
+# gridlines span ~78% of the figure and missed the shape default.
+GRID_CLASSES = {"gl", "grid", "gridline", "grid-line", "gm", "mn", "mj", "minor", "major"}
+AXIS_CLASSES = {"ax", "axis", "axes", "axv", "axh", "x-axis", "y-axis"}
 
 
 def severity_for(name: str) -> str:
@@ -21,8 +26,8 @@ def stroke_name(stroke: dict) -> str:
 
 
 def stroke_role(stroke: dict, fig: dict, profile: dict) -> str:
-    """data-pf-role > profile mark_roles > shape default. The shape default
-    exists because the hook runs check without a profile."""
+    """data-pf-role > profile mark_roles > known class names > shape default.
+    The last two exist because the hook runs check without a profile."""
     if stroke.get("data_role") in MARK_ROLES:
         return stroke["data_role"]
     hit = None
@@ -32,6 +37,11 @@ def stroke_role(stroke: dict, fig: dict, profile: dict) -> str:
             hit = mr[c]
     if hit:
         return hit
+    cls = set(stroke.get("classes") or [])
+    if cls & AXIS_CLASSES:
+        return "axis"
+    if cls & GRID_CLASSES:
+        return "gridline"
     if any(h.get("stroke_id") == stroke["id"] for h in fig.get("heads", [])):
         return "mark"   # an arrow is never a gridline, however long
     xs = [p[0] for p in stroke["pts"]]

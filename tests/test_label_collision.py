@@ -16,12 +16,12 @@ def hits_in(art, cls, prof=NOPROF):
     return [h for h in LC.hits(art, prof) if h["figure"] == f"svg.{cls}"]
 
 
-@pytest.mark.parametrize("cls", ["f-tt-overlap", "f-line-through", "f-rotated", "f-subscript", "f-head"])
+@pytest.mark.parametrize("cls", ["f-tt-overlap", "f-line-through", "f-rotated", "f-subscript", "f-head", "f-role-axis"])
 def test_collisions_found(labels, cls):
     assert len(hits_in(labels, cls)) == 1
 
 
-@pytest.mark.parametrize("cls", ["f-tt-clear", "f-line-clear", "f-ok", "f-grid", "f-role-axis", "f-tick"])
+@pytest.mark.parametrize("cls", ["f-tt-clear", "f-line-clear", "f-ok", "f-grid", "f-tick"])
 def test_no_false_alarm(labels, cls):
     assert hits_in(labels, cls) == []
 
@@ -36,7 +36,7 @@ def test_fix_hint_has_direction_and_viewbox_units(labels):
 
 
 def test_profile_mark_roles_exempt_a_class(labels):
-    prof = {"roles": {}, "mark_roles": {"vec": "axis"}}
+    prof = {"roles": {}, "mark_roles": {"vec": "gridline"}}
     assert hits_in(labels, "f-line-through", prof) == []
 
 
@@ -60,6 +60,28 @@ def test_stroke_role_shape_defaults():
     assert marks.stroke_role(mk([[0, 0], [50, 40]]), fig, NOPROF) == "mark"
     fig_h = {"rect": [0, 0, 400, 120], "heads": [{"stroke_id": "s0"}]}
     assert marks.stroke_role(mk([[10, 50], [390, 50]]), fig_h, NOPROF) == "mark"
+
+
+def test_stroke_role_known_classes_beat_the_shape_default():
+    fig = {"rect": [0, 0, 400, 120], "heads": []}
+    mk = lambda cls, pts: {"id": "s0", "classes": cls, "data_role": None, "pts": pts}
+    short = [[20, 50], [150, 50]]          # 33% span: the shape default says "mark"
+    assert marks.stroke_role(mk(["gl"], short), fig, NOPROF) == "gridline"
+    assert marks.stroke_role(mk(["mn"], short), fig, NOPROF) == "gridline"
+    assert marks.stroke_role(mk(["ax"], [[10, 50], [390, 50]]), fig, NOPROF) == "axis"
+    assert marks.stroke_role(mk(["gl"], short), fig, {"mark_roles": {"gl": "mark"}}) == "mark"
+
+
+def test_label_on_an_axis_is_flagged_on_a_gridline_is_not():
+    import copy
+    base = load_artifacts("tests/fixtures/visual/labels.geometry.json")
+    fig = next(f for f in base.dom_geometry["figure_marks"] if f["figure"] == "svg.f-line-through")
+    for cls, expect in ((["ax"], 1), (["gl"], 0)):
+        art = copy.deepcopy(base)
+        f = next(f for f in art.dom_geometry["figure_marks"] if f["figure"] == fig["figure"])
+        for s in f["strokes"]:
+            s["classes"] = cls
+        assert len(hits_in(art, "f-line-through")) == expect, cls
 
 
 def _shift(poly, dx, dy):
