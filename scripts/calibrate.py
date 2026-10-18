@@ -18,7 +18,6 @@ import hashlib
 import html
 import io
 import json
-import os
 import random
 import re
 import sys
@@ -152,7 +151,7 @@ def shoot(html_path: str, content_w: float, regions, scale: float = SCALE) -> li
     try:
         cdp.send("Page.enable")
         cdp.send("Emulation.setEmulatedMedia", media="print")
-        cdp.send("Page.navigate", url="file://" + os.path.abspath(html_path))
+        cdp.send("Page.navigate", url=Path(html_path).resolve().as_uri())
         cdp.wait_event("Page.loadEventFired")
         cdp.send("Emulation.setDeviceMetricsOverride", width=int(round(content_w)), height=1000,
                  deviceScaleFactor=1, mobile=False)

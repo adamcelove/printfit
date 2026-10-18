@@ -111,3 +111,13 @@ def test_ok_and_role_attributes(labels):
 def test_existing_figures_unchanged(arrows):
     sels = [f["selector"] for f in arrows.dom_geometry["figures"]]
     assert sels == [m["figure"] for m in arrows.dom_geometry["figure_marks"]]
+
+
+@pytest.mark.browser
+def test_path_with_hash_and_spaces_renders_the_real_file(tmp_path, labels):
+    # "file://" + path cut the URL at "#": Chrome loaded an error page and every gate passed on it.
+    import shutil
+    doc = tmp_path / "Forces Quiz #1 (copy).html"
+    shutil.copy(f"{FIX}/labels.html", doc)
+    art = R.render(str(doc), str(tmp_path / "out"))
+    assert len(art.dom_geometry["figure_marks"]) == len(labels.dom_geometry["figure_marks"])

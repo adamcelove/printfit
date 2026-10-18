@@ -506,7 +506,7 @@ def render(html_path: str, out_dir: str, raster_dpi: int = 150,
     try:
         cdp.send("Page.enable")
         cdp.send("Emulation.setEmulatedMedia", media="print")
-        cdp.send("Page.navigate", url="file://" + html_path)
+        cdp.send("Page.navigate", url=Path(html_path).as_uri())
         cdp.wait_event("Page.loadEventFired")
         # first pass: read @page so the layout viewport can match the paper
         page_rule = cdp.evaluate(
