@@ -228,6 +228,9 @@ class RenderArtifacts:
 HARD_GATES: tuple[str, ...] = (
     "structural", "auto_height", "figure_overflow", "text_scale",
     "page_slack", "qa_overflow", "fonts",
+    # promoted 2026-10-17 after teacher calibration: 15/15 and 17/17 real
+    # findings caught, 0 false alarms
+    "label_collision", "arrow_shaft",
 )
 
 

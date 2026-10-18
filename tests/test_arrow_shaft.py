@@ -45,10 +45,10 @@ def test_gap(arrows):
     assert "(202.5, 30.0)" in h["fix"]                   # tip 212 minus (10 - 0.5)
 
 
-def test_run_soft_until_promoted(arrows):
+def test_run_is_hard_after_promotion(arrows):
     f = AS.run(arrows, NOPROF)
     assert {x.id.split(":")[0] for x in f} == {"arrow_shaft"}
-    assert all(x.severity == "soft" for x in f)
+    assert all(x.severity == "hard" for x in f)
 
 
 def test_missing_figure_marks_is_a_noop():

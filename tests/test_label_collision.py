@@ -40,9 +40,9 @@ def test_profile_mark_roles_exempt_a_class(labels):
     assert hits_in(labels, "f-line-through", prof) == []
 
 
-def test_run_is_soft_until_promoted(labels):
+def test_run_is_hard_after_promotion(labels):
     f = LC.run(labels, NOPROF)
-    assert f and all(x.severity == marks.severity_for(LC.NAME) == "soft" for x in f)
+    assert f and all(x.severity == marks.severity_for(LC.NAME) == "hard" for x in f)
     assert all(x.id.startswith("label_collision:svg.") for x in f)
 
 

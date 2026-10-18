@@ -15,7 +15,7 @@ from ..types import Finding, RenderArtifacts
 NAME = "label_collision"
 TEXT_OVERLAP_PX = 1.0
 TEXT_INSET_PX = 1.0
-STROKE_EPS_PX = 0.05
+STROKE_EPS_PX = 0.5    # calibration 2026-10-17: every real hit was >= 0.71px; touches under 0.5px sit in the text box padding, not on ink
 CLEARANCE_PX = 1.0
 IGNORED_ROLES = {"gridline", "tick"}   # axes are obstacles: a label on an axis hurts reading; on a gridline it does not
 
