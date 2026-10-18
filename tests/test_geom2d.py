@@ -59,3 +59,31 @@ def test_cross_halfwidth_triangle():
 def test_cross_halfwidth_off_axis_is_symmetric_part():
     # axis at y=2 inside a triangle spanning y 0..8 at the base: symmetric part is 2
     assert G.cross_halfwidth(TRI, (0, 2), (1, 0), 0.0) == pytest.approx(2)
+
+
+def test_sat_pushes_thin_segment_uses_clearance_not_intersection():
+    box = [(0, 0), (10, 0), (10, 10), (0, 10)]
+    line = G.segment_rect((-20, 5), (30, 5), 1.0)    # y 4..6, crosses the whole box
+    pushes = G.sat_pushes(box, line)
+    # intersection length is 2 (the line's width), but separating needs 6 either way vertically
+    assert G.sat_overlap(box, line)[0] == pytest.approx(2)
+    d, ax = pushes[0]
+    assert d == pytest.approx(6)
+    assert abs(ax[0]) == pytest.approx(0) and abs(ax[1]) == pytest.approx(1)
+    assert pushes[1][0] == pytest.approx(6) and pushes[1][1][1] == pytest.approx(-ax[1])
+    assert [p[0] for p in pushes] == sorted(p[0] for p in pushes)
+    assert len(pushes) == 4                           # parallel axes deduplicated
+
+
+def test_sat_pushes_corner_overlap_matches_sat_overlap():
+    other = shift(SQ, 7, 4)
+    d, ax = G.sat_pushes(SQ, other)[0]
+    depth, sax = G.sat_overlap(SQ, other)
+    assert d == pytest.approx(depth) == pytest.approx(3)
+    assert ax == pytest.approx(sax)
+    assert ax == pytest.approx((-1, 0))
+
+
+def test_sat_pushes_separated_and_touching_are_empty():
+    assert G.sat_pushes(SQ, shift(SQ, 20, 0)) == []
+    assert G.sat_pushes(SQ, shift(SQ, 10, 0)) == []

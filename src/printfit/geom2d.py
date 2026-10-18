@@ -71,6 +71,31 @@ def sat_overlap(a: Poly, b: Poly) -> tuple[float, Pt] | None:
     return o, ax
 
 
+def sat_pushes(a: Poly, b: Poly) -> list[tuple[float, Pt]]:
+    """Distance `a` must translate along each SAT direction (both signs of
+    every edge normal) to stop overlapping `b`, ascending; [] if separate.
+    The first entry is the minimum translation vector."""
+    axes: list[Pt] = []
+    for poly in (a, b):
+        n = len(poly)
+        for i in range(n):
+            e = sub(poly[(i + 1) % n], poly[i])
+            if e == (0.0, 0.0) or e == (0, 0):
+                continue
+            ax = _unit((-e[1], e[0]))
+            if not any(abs(ax[0] * q[1] - ax[1] * q[0]) < 1e-9 for q in axes):
+                axes.append(ax)
+    out: list[tuple[float, Pt]] = []
+    for ax in axes:
+        pa = [dot(p, ax) for p in a]
+        pb = [dot(p, ax) for p in b]
+        if min(max(pa), max(pb)) - max(min(pa), min(pb)) <= 1e-9:
+            return []
+        out.append((max(pb) - min(pa), ax))
+        out.append((max(pa) - min(pb), (-ax[0], -ax[1])))
+    return sorted(out, key=lambda p: round(p[0], 9))
+
+
 def segment_rect(p: Pt, q: Pt, half_w: float) -> Poly | None:
     d = sub(q, p)
     length = math.hypot(*d)

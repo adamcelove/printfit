@@ -60,3 +60,32 @@ def test_stroke_role_shape_defaults():
     assert marks.stroke_role(mk([[0, 0], [50, 40]]), fig, NOPROF) == "mark"
     fig_h = {"rect": [0, 0, 400, 120], "heads": [{"stroke_id": "s0"}]}
     assert marks.stroke_role(mk([[10, 50], [390, 50]]), fig_h, NOPROF) == "mark"
+
+
+def _shift(poly, dx, dy):
+    return [(x + dx, y + dy) for x, y in poly]
+
+
+def test_first_suggested_move_clears_every_hit(labels):
+    from printfit import geom2d as G
+    hs = LC.hits(labels, NOPROF)
+    assert hs
+    for h in hs:
+        box, other = h["polys"]
+        dx, dy = h["move_px"]
+        moved = _shift(box, dx, dy)
+        if h["message"].split(" overlaps ")[1].startswith("label '"):
+            o = G.sat_overlap(moved, other)
+            assert o is None or o[0] < LC.TEXT_OVERLAP_PX, h["fid"]
+        else:
+            assert G.sat_overlap(G.inset_quad(moved, LC.TEXT_INSET_PX), other) is None, h["fid"]
+
+
+def test_line_through_first_move_is_hand_computed(labels):
+    # inset box y 312..326, stroke rect y 317.8..320.2: clearing takes
+    # 326 - 317.8 = 8.2 up or 320.2 - 312 = 8.2 down, plus CLEARANCE_PX = 9.2
+    h = hits_in(labels, "f-line-through")[0]
+    dx, dy = h["move_px"]
+    assert dx == pytest.approx(0) and abs(dy) == pytest.approx(9.2)
+    assert "9.2px up or 9.2px down" in h["fix"] or "9.2px down or 9.2px up" in h["fix"]
+    assert "(9.2 or 9.2 viewBox units)" in h["fix"]
