@@ -8,7 +8,7 @@ happens to notice.
 """
 from __future__ import annotations
 
-from ..types import (FILL_BAND, FILL_SOFT_MIN, PAGE_SLACK_TOLERANCE_PX, Finding,
+from ..types import (FILL_BAND, FILL_SOFT_MIN, HARD_GATES, PAGE_SLACK_TOLERANCE_PX, Finding,
                      RenderArtifacts)
 
 
@@ -16,7 +16,18 @@ def run(artifacts: RenderArtifacts, profile: dict) -> list[Finding]:
     """Report slack for every page; fail any page below tolerance."""
     out: list[Finding] = []
     for p in artifacts.pages:
-        if p.slack_px < PAGE_SLACK_TOLERANCE_PX and not p.is_final:
+        if p.slack_px < PAGE_SLACK_TOLERANCE_PX and not p.is_final and p.slack_px < 1.0:
+            # ink to within a pixel of the edge: Chrome split a box (or text)
+            # across the break, so the page reads full whatever small cut is made
+            out.append(Finding(id=f"page_slack:page-{p.index}", severity="hard",
+                               value=round(p.slack_px, 1), threshold=PAGE_SLACK_TOLERANCE_PX,
+                               page=p.index, page_source="pdf",
+                               message=f"page {p.index} is full to the edge (slack {p.slack_px:.1f}px): "
+                                       "content runs across the break, so a cut smaller than the "
+                                       "part that continues on the next page leaves it full",
+                               suggested_fix="run check --why: it names what was split and how much "
+                                             "continues; fit it whole, move it whole, or split it in the source"))
+        elif p.slack_px < PAGE_SLACK_TOLERANCE_PX and not p.is_final:
             out.append(Finding(id=f"page_slack:page-{p.index}", severity="hard",
                                value=round(p.slack_px, 1), threshold=PAGE_SLACK_TOLERANCE_PX,
                                page=p.index, page_source="pdf",
@@ -32,6 +43,16 @@ def run(artifacts: RenderArtifacts, profile: dict) -> list[Finding]:
                                message=f"page {p.index} slack {p.slack_px:.0f}px"
                                        + (" (final page: nothing to orphan)" if p.is_final
                                           and p.slack_px < PAGE_SLACK_TOLERANCE_PX else "")))
+    for p in artifacts.pages:
+        if p.fill_ratio <= 0.0:
+            out.append(Finding(id=f"blank_page:page-{p.index}",
+                               severity="hard" if "blank_page" in HARD_GATES else "soft", value=0.0,
+                               page=p.index, page_source="pdf",
+                               message=f"page {p.index} prints as a blank sheet: whatever landed "
+                                       "on it has no ink (an empty answer box or a white panel "
+                                       f"that ran past page {p.index - 1})",
+                               suggested_fix=f"run check --why for what spilled from page "
+                                             f"{p.index - 1} and how much room it needs"))
     out += fill_ratio(artifacts, profile)
     out += qa_overflow(artifacts)
     out += qa_split(artifacts)

@@ -10,6 +10,7 @@ from __future__ import annotations
 import dataclasses
 import json
 import os
+import re
 from html import escape
 
 from PIL import Image, ImageDraw
@@ -18,11 +19,32 @@ from . import __version__
 from .types import PAGE_SLACK_TOLERANCE_PX, Finding, RenderArtifacts, Report
 
 ORDER = {"hard": 0, "soft": 1, "info": 2}
+_IDX = re.compile(r"\[\d+\]")
+
+
+def headline(report: Report) -> str:
+    """The verdict and its reason on one line, printed first so that output cut
+    by `head`, `tail` or `grep` still carries it."""
+    hard = sorted({f.id for f in report.findings if f.failed})
+    art = report.artifacts
+    pages = f"{art.page_count} page{'s' if art.page_count != 1 else ''}" if art else ""
+    if hard:
+        by_check: dict[str, int] = {}
+        for i in hard:
+            by_check[i.split(":")[0]] = by_check.get(i.split(":")[0], 0) + 1
+        shown = ", ".join(f"{k} ×{n}" if n > 1 else next(i for i in hard if i.split(":")[0] == k)
+                          for k, n in by_check.items())
+        return f"verdict: {report.verdict} · {len(hard)} hard: {shown}" + (f" · {pages}" if pages else "")
+    tight = min((p for p in art.pages if not p.is_final), key=lambda p: p.slack_px, default=None) if art else None
+    tail = f", tightest slack {tight.slack_px:.0f}px (page {tight.index})" if tight else ""
+    return f"verdict: {report.verdict}" + (f" · {pages}{tail}" if pages else "")
 
 
 def render_text(report: Report, why: bool = False, diff: dict | None = None, full: bool = False,
-                prev: dict | None = None, fit_notes: list[str] | None = None) -> str:
-    lines = []
+                prev: dict | None = None, fit_notes: list[str] | None = None, brief: bool = False) -> str:
+    """brief: headline, page table and hard findings only -- what a fix loop
+    needs, with soft findings, skipped checks and diff bookkeeping left out."""
+    lines = [headline(report), ""]
     art = report.artifacts
     if art:
         for p in art.pages:
@@ -37,7 +59,20 @@ def render_text(report: Report, why: bool = False, diff: dict | None = None, ful
                    key=lambda f: (ORDER[f.severity], f.id))
     hard = [f for f in shown if f.severity == "hard"]
     prev_by_id = {f["id"]: f for f in (prev or {}).get("findings", [])}
-    if diff is not None and not full:
+    if brief:
+        # one entry per repeated finding: same check and same message once the
+        # occurrence index ([2], [3], ...) is dropped
+        groups: dict[tuple[str, str], list[Finding]] = {}
+        for f in hard:
+            key = (_IDX.sub("", f.id), _IDX.sub("", f.message))
+            groups.setdefault(key, []).append(f)
+        for fs in groups.values():
+            lines.extend(_finding_lines(fs[0], diff, prev_by_id))
+            if len(fs) > 1:
+                lines.append(f"        same on: {', '.join(f.selector or f.id for f in fs[1:])}")
+        if diff and diff.get("fixed"):
+            lines.append(f"  fixed: {', '.join(diff['fixed'])}")
+    elif diff is not None and not full:
         interesting = set(diff.get("new", [])) | set(diff.get("regressed", [])) | set(diff.get("changed", []))
         soft_info = [f for f in shown if f.severity != "hard"]
         to_print = hard + [f for f in soft_info if f.id in interesting]
@@ -56,7 +91,7 @@ def render_text(report: Report, why: bool = False, diff: dict | None = None, ful
     else:
         for f in shown:
             lines.extend(_finding_lines(f, diff, prev_by_id))
-    if report.skipped_checks:
+    if report.skipped_checks and not brief:
         lines.append(f"\n  skipped (no profile roles): {', '.join(report.skipped_checks)}")
     n = report.hard_failed
     lines.append(f"\n  {n} hard gate{'s' if n != 1 else ''} failed" if n else "\n  all hard gates pass")
@@ -83,6 +118,18 @@ def render_why_text(entries: list[dict], fit_notes: list[str] | None = None) -> 
     if not entries:
         lines.append("    (no page_slack or section_page hard findings)")
     for e in entries:
+        if e.get("kind") == "blank":
+            lines.append(f"    {e['message']}")
+            for o in e.get("options", []):
+                lines.append(f"      {o}")
+            continue
+        if e.get("kind") == "split":
+            lines.append(f"    {e['message']}")
+            for o in e.get("options", []):
+                lines.append(f"      option: {o}")
+            if e.get("absorb_with"):
+                lines.append(f"      absorb with: {' · '.join(e['absorb_with'])}")
+            continue
         if e.get("kind") == "underfull":
             lines.append(f"    {e['message']}")
             if e.get("cause"):
@@ -243,6 +290,10 @@ def compute_why(art: RenderArtifacts, findings: list[Finding]) -> list[dict]:
             if page is None:
                 continue
             out.append(_page_slack_entry(art, atoms, page, f, PAGE_SLACK_TOLERANCE_PX))
+        elif f.id.startswith("blank_page:page-"):
+            entry = _blank_entry(art, atoms, f.page)
+            if entry:
+                out.append(entry)
         elif f.id.startswith("section_page:"):
             landed = f.page
             if not landed or landed <= 1:
@@ -266,6 +317,42 @@ def compute_why(art: RenderArtifacts, findings: list[Finding]) -> list[dict]:
     return out
 
 
+def atom_pages(art: RenderArtifacts, atoms: list[dict]) -> list[int | None]:
+    """The PDF page each atom starts on, found by matching the start of its
+    text against each page's extracted text, in order. Atoms with no text of
+    their own (answer space, figures) and text the PDF renders differently
+    (MathML) come back None."""
+    norm = lambda t: re.sub(r"\s+", " ", t or "").strip().lower()
+    pages = [norm(t) for t in art.dom_geometry.get("pdf", {}).get("page_text", [])]
+    out: list[int | None] = []
+    cur = 1
+    for a in atoms:
+        key = norm(a.get("text"))[:30]
+        hit = None
+        if len(key) >= 6:
+            hit = next((i + 1 for i in range(cur - 1, len(pages)) if key in pages[i]), None)
+        if hit:
+            cur = hit
+        out.append(hit)
+    return out
+
+
+def page_starts(art: RenderArtifacts, atoms: list[dict]) -> dict[int, float]:
+    """DOM-model y at which each PDF page begins: 0 for page 1, then the first
+    atom whose text lands on the page. Pages no atom could be matched to fall back to N*H after the
+    last known start, which is exact until the first early break."""
+    H = art.page_content_h_px
+    starts: dict[int, float] = {}
+    for a, pg in zip(atoms, atom_pages(art, atoms)):
+        if pg and pg not in starts:
+            starts[pg] = a["rect"]["y"]
+    starts[1] = 0.0                       # DOM y 0 is the top of page 1's content box
+    for n in range(2, art.page_count + 2):
+        if n not in starts:
+            starts[n] = starts[n - 1] + H
+    return starts
+
+
 def _page_of(y: float, H: float) -> int:
     """1-indexed page containing DOM-model y `y`.
 
@@ -284,7 +371,8 @@ def _page_end_y(n: int, H: float) -> float:
 def _page_slack_entry(art: RenderArtifacts, atoms: list[dict], page: int, f: Finding,
                       tolerance: float) -> dict:
     H = art.page_content_h_px
-    boundary_y = _page_end_y(page, H)
+    starts = page_starts(art, atoms)
+    boundary_y = starts[page] + H
     value = f.value
     threshold = f.threshold if f.threshold is not None else tolerance
     over_px = None
@@ -301,7 +389,41 @@ def _page_slack_entry(art: RenderArtifacts, atoms: list[dict], page: int, f: Fin
     # tolerance - slack + tolerance (a 12px cushion beyond the floor)
     reduction_target = (tolerance - value + tolerance) if value is not None else 0.0
     kind = "overflow" if over_px is not None else "short"
+    # ink reaching the content edge to within a pixel is Chrome splitting a
+    # breakable box across the break, not a near miss: the page stays full
+    # whatever small edit is made, until the whole box fits or moves
+    split = None
+    if value is not None and value < 1.0:
+        # innermost inked box (border or background) crossing the page end
+        crossing = [b for b in art.dom_geometry.get("inked_boxes", [])
+                    if not b.get("avoid") and b["rect"]["y"] < boundary_y < b["rect"]["y"] + b["rect"]["h"]]
+        box = min(crossing, key=lambda b: b["rect"]["h"], default=None)
+        if box is not None:
+            split = (box, box["rect"]["y"] + box["rect"]["h"] - boundary_y)
+    if value is not None and value < 1.0 and split is None:
+        on_page = [a for a in atoms if starts[page] <= a["rect"]["y"] < starts[page + 1]]
+        last = max(on_page, key=lambda a: a["rect"]["y"], default=None)
+        if last is not None and not last.get("avoid"):
+            run = last["rect"]["y"] + last["rect"]["h"] - boundary_y
+            if run > 0:
+                split = (last, run)
+    if split:
+        last, run = split
+        kind = "split"
+        headline = (f"page {page} is full to the edge: Chrome split {last['selector']} across pages "
+                    f"{page}-{page + 1}, ~{run:.0f}px of it continues on page {page + 1}; edits smaller "
+                    f"than that leave this page full")
+        reduction_target = run + 2 * tolerance
+    if split:
+        last, run = split
+        options = [f"keep it whole on page {page}: cut ~{run + 2 * tolerance:.0f}px from page {page}",
+                   f"move it whole to page {page + 1}: add break-inside: avoid to {last['selector']}"]
+        if last["rect"]["h"] > H - 2 * tolerance:
+            options = [(f"{last['selector']} is taller than a page ({last['rect']['h']:.0f}px), so it must "
+                        f"split: split it in the source (close it before the last block that fits on "
+                        f"page {page} and reopen it on page {page + 1}) so page {page}'s part ends with room")]
     entry = {"kind": kind, "page": page, "message": headline,
+             "options": options if split else [],
              "over_px": over_px, "short_by_px": short_by_px,
              "straddling": None, "no_straddle_reason": None,
              "preceded_by": None, "absorb_with": []}
@@ -331,9 +453,32 @@ def _page_slack_entry(art: RenderArtifacts, atoms: list[dict], page: int, f: Fin
         forced = "yes" if h_atom.get("break_before") else "no"
         entry["preceded_by"] = (f"{h_atom['tag']} \"{h_atom['heading']}\" at y {h_atom['rect']['y']:.0f} "
                                  f"(forced break before: {forced})")
-    if reduction_target > 0:
+    must_split = split is not None and split[0]["rect"]["h"] > H - 2 * tolerance
+    if reduction_target > 0 and not must_split:
         entry["absorb_with"] = _absorb_candidates(art, atoms, page, reduction_target)
     return entry
+
+
+def _blank_entry(art: RenderArtifacts, atoms: list[dict], page: int) -> dict | None:
+    """A page with no ink: what spilled onto it, and how much room that needs.
+    The spill is the run of textless atoms (answer space, white panels) after
+    the last atom whose text the PDF places on the page before."""
+    pages = atom_pages(art, atoms)
+    before = [i for i, pg in enumerate(pages) if pg is not None and pg < page]
+    if not before:
+        return None
+    end = page_starts(art, atoms)[page - 1] + art.page_content_h_px
+    tail = [a for a in atoms[before[-1] + 1:] if not (a.get("text") or "").strip()]
+    spilled = [a for a in tail if a["rect"]["y"] + a["rect"]["h"] > end]
+    if not spilled:
+        return None
+    over = max(a["rect"]["y"] + a["rect"]["h"] for a in spilled) - end
+    names = ", ".join(a["selector"] for a in spilled[:4]) + (" ..." if len(spilled) > 4 else "")
+    msg = (f"page {page} prints blank: {names} (no ink: empty answer space or a white box) "
+           f"ran ~{over:.0f}px past the end of page {page - 1}, whose slack counts that box as empty")
+    return {"kind": "blank", "page": page, "message": msg, "need_px": over,
+            "options": [f"free ~{over + 2 * PAGE_SLACK_TOLERANCE_PX:.0f}px on page {page - 1}",
+                        f"or move {spilled[0]['selector']} and what follows to a page with room"]}
 
 
 def _underfull_entry(art: RenderArtifacts, atoms: list[dict], page: int) -> dict | None:
@@ -353,7 +498,7 @@ def _underfull_entry(art: RenderArtifacts, atoms: list[dict], page: int) -> dict
     remaining_px = max(0.0, (1.0 - fill) * H)
     end_rel = fill * H
     # page N spans DOM y in [(N-1)*H, N*H) -- see _page_of/_page_end_y.
-    abs_end = _page_end_y(page - 1, H) + end_rel
+    abs_end = page_starts(art, atoms)[page] + end_rel
     after = [a for a in atoms if a["rect"]["y"] >= abs_end]
     moved_atom = after[0] if after else None
     if moved_atom is None:
@@ -422,8 +567,8 @@ def _underfull_entry(art: RenderArtifacts, atoms: list[dict], page: int) -> dict
 
 
 def _absorb_candidates(art: RenderArtifacts, atoms: list[dict], page: int, target_px: float) -> list[str]:
-    H = art.page_content_h_px
-    lo, hi = _page_end_y(page - 1, H), _page_end_y(page, H)
+    starts = page_starts(art, atoms)
+    lo, hi = starts[page], starts[page + 1]
     geom = art.dom_geometry
     boxes = [b for b in geom.get("inline_heights", []) if lo <= b["rect"]["y"] < hi]
     figs = [fg for fg in geom.get("figures", []) if lo <= fg.get("rect", {}).get("y", -1) < hi]

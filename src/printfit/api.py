@@ -27,7 +27,10 @@ def check(html_path: str, profile_path: str | None = None, out_dir: str | None =
                       findings=[Finding(id="harness", severity="hard", message=str(e))],
                       artifacts=None)
     findings, skipped = run_all(art, prof)
-    findings += preflight(html_path, prof)
+    # the measured text_scale above decides; the static estimate stays in the
+    # report so its agreement with the measurement can be audited
+    findings += [dataclasses.replace(f, severity="info", message=f.message + " (static estimate)")
+                 for f in preflight(html_path, prof)]
     findings += preflight_print_color(html_path)
     findings += duplicate.run_html(html_path)
     fp = structural.fingerprint(html_path)

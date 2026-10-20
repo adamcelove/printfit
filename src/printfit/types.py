@@ -231,6 +231,10 @@ HARD_GATES: tuple[str, ...] = (
     # promoted 2026-10-17 after teacher calibration: 15/15 and 17/17 real
     # findings caught, 0 false alarms
     "label_collision", "arrow_shaft",
+    # 2026-10-20: a page with no ink is a blank sheet in every student's copy;
+    # transcript mining found 10 in session renders (2026-09-18..10-20), and no
+    # document in the corpus intends one
+    "blank_page",
 )
 
 

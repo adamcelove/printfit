@@ -17,17 +17,14 @@ from __future__ import annotations
 import re
 
 from .. import cssutil
-from ..types import (TEXT_ABS_MIN_PX, TEXT_SCALE_FAIL, TEXT_SCALE_WARN,
-                     Finding, RenderArtifacts)
 from ..profile import role_for
-
-# Static preflight is coarse by design: it cannot know the true rendered width,
-# so it only catches the factor-of-3 authoring error, never the 1.6x case that
-# the measured check adjudicates.
-PREFLIGHT_RATIO = 2.0
-
-_SVG = re.compile(r"<svg([^>]*)>", re.I)
-_ATTR = re.compile(r"([\w-]+)\s*=\s*[\"']([^\"']*)[\"']")
+from ..types import (
+    TEXT_ABS_MIN_PX,
+    TEXT_SCALE_FAIL,
+    TEXT_SCALE_WARN,
+    Finding,
+    RenderArtifacts,
+)
 
 
 def run(artifacts: RenderArtifacts, profile: dict) -> list[Finding]:
@@ -55,12 +52,15 @@ def run(artifacts: RenderArtifacts, profile: dict) -> list[Finding]:
             vbw = fig["viewbox"]["w"]
             fix = (f"re-author {sel} in a wider viewBox ({vbw:.0f} -> "
                    f"~{vbw*scale:.0f} units) so scale falls from {scale:.2f} to ~1.00")
-        if worst["realised_px"] < TEXT_ABS_MIN_PX:
+        tiny = min(scored, key=lambda t: t.get("min_realised_px", t["realised_px"]))
+        tiny_px = tiny.get("min_realised_px", tiny["realised_px"])
+        if tiny_px < TEXT_ABS_MIN_PX:
             out.append(Finding(id=f"text_scale:{sel}", severity="hard",
                                threshold=TEXT_ABS_MIN_PX,
-                               message=msg + f"; below absolute floor {TEXT_ABS_MIN_PX}px",
-                               suggested_fix=f"enlarge .{worst.get('class')} inside {sel}",
-                               **base))
+                               message=(f"smallest label in class `.{tiny.get('class') or '?'}` realises "
+                                        f"{tiny_px:.1f}px; below absolute floor {TEXT_ABS_MIN_PX}px"),
+                               suggested_fix=f"enlarge the smallest .{tiny.get('class') or 'text'} labels inside {sel}",
+                               **{**base, "value": round(tiny_px / body, 3)}))
         elif not TEXT_SCALE_FAIL[0] <= ratio <= TEXT_SCALE_FAIL[1]:
             out.append(Finding(id=f"text_scale:{sel}", severity="hard",
                                threshold=TEXT_SCALE_FAIL[1] if ratio > 1 else TEXT_SCALE_FAIL[0],
@@ -88,50 +88,94 @@ def _page_of(fig: dict, artifacts: RenderArtifacts) -> int:
     return int(fig["rect"]["y"] // h) + 1
 
 
-def preflight(html_path: str, profile: dict | None = None) -> list[Finding]:
-    """Source-only variant needing no render.
+def static_figures(html_path: str, profile: dict | None = None) -> list[dict]:
+    """Every top-level svg in the blank state with its print width, viewBox
+    scale and worst label size, resolved from the source alone.
 
-    Flags any figure whose viewBox width diverges from its declared render
-    width by more than PREFLIGHT_RATIO. Catches the 210-vs-700 authoring error
-    statically, before Chrome is ever launched.
-    """
+    Widths come from the cascade (`cssutil.Cascade`: real selector matching,
+    so `.gp svg{width:100%}` reaches only svgs inside `.gp`). `exact` is False
+    when the container width passed through a guess."""
     src = open(html_path, encoding="utf-8").read()
-    rl = cssutil.rules(src)
-    body_w = cssutil.body_width_px(src)
-    out: list[Finding] = []
+    c = cssutil.Cascade(src)
+    body = c.font_px(c.body())
+    exempt = set((profile or {}).get("text_scale_exempt") or [])
+    out: list[dict] = []
     counts: dict[str, int] = {}
-    for m in _SVG.finditer(src):
-        attrs = dict(_ATTR.findall(m.group(1)))
-        vb = attrs.get("viewBox") or attrs.get("viewbox")
-        if not vb:
+    for svg in c.tree.iter("svg"):
+        if any(a.tag == "svg" for a in svg.iterancestors()):
             continue
-        p = vb.split()
-        if len(p) != 4:
-            continue
-        vbw, vbh = float(p[2]), float(p[3])
-        classes = attrs.get("class", "").split()
-        key = "svg" + "".join("." + c for c in classes)
+        classes = (svg.get("class") or "").split()
+        key = "svg" + "".join("." + k for k in classes)
         counts[key] = counts.get(key, 0) + 1
         sel = f"{key}[{counts[key]}]" if counts[key] > 1 else key
-        w = cssutil.declared(rl, classes, "svg", "width")
-        h = cssutil.declared(rl, classes, "svg", "height")
-        wpx = cssutil.to_px(w)
-        hpx = cssutil.to_px(h)
-        if wpx is None and w and w.strip().endswith("%"):
-            wpx = body_w * float(w.strip().rstrip("%")) / 100
-        if wpx is None and hpx is not None and vbh:
-            wpx = hpx * vbw / vbh
-        if wpx is None and (w is None or w == "auto") and hpx is None:
-            wpx = body_w          # an unsized svg with a viewBox fills its container
-        if wpx is None:
+        p = (svg.get("viewBox") or svg.get("viewbox") or "").replace(",", " ").split()
+        if len(p) != 4 or float(p[2]) <= 0 or float(p[3]) <= 0:
             continue
-        ratio = wpx / vbw
-        if ratio > PREFLIGHT_RATIO or ratio < 1 / PREFLIGHT_RATIO:
-            out.append(Finding(
-                id=f"text_scale_preflight:{sel}", severity="hard",
-                selector=sel, value=round(ratio, 2), threshold=PREFLIGHT_RATIO,
-                message=f"{sel}: viewBox {vbw:.0f} units wide but declared render "
-                        f"width ~{wpx:.0f}px ({ratio:.2f}x); in-figure text will scale "
-                        f"by the same factor",
-                suggested_fix=f"author the viewBox at ~{wpx:.0f} units wide"))
+        if any((c.value(e, "display")[1] or "").strip() == "none" for e in [svg, *svg.iterancestors()]):
+            continue                    # not in the blank state (key-only figures)
+        vbw, vbh = float(p[2]), float(p[3])
+        avail, exact = c.inner_width(svg.getparent())
+        wpx = _length(c.value(svg, "width")[1], avail)
+        hpx = _length(c.value(svg, "height")[1], None)
+        if wpx is None and hpx is not None:
+            wpx = hpx * vbw / vbh
+        if wpx is None:
+            wpx = avail               # an unsized svg with a viewBox fills its container
+        cap = _length(c.value(svg, "max-width")[1], avail)
+        if cap is not None:
+            wpx = min(wpx, cap)
+        scale = min(wpx / vbw, hpx / vbh) if hpx else wpx / vbw
+        texts = list(svg.iter("text"))
+        sized = [(((t.get("class") or "").split() or [""])[0], c.font_px(t) * scale) for t in texts]
+        scored = [x for x in sized if x[0] not in exempt] or sized
+        worst = max(scored, key=lambda x: abs(x[1] / body - 0.8)) if scored else (None, None)
+        tiny = min(scored, key=lambda x: x[1]) if scored else (None, None)
+        out.append({"selector": sel, "viewbox_w": vbw, "width_px": wpx, "height_px": hpx,
+                    "scale": scale, "exact": exact, "body_px": body,
+                    "worst_class": worst[0], "worst_px": worst[1],
+                    "min_class": tiny[0], "min_px": tiny[1],
+                    "ratio": worst[1] / body if worst[1] is not None else None})
     return out
+
+
+def preflight(html_path: str, profile: dict | None = None) -> list[Finding]:
+    """Source-only variant needing no render: `static_figures`, judged with the
+    same bands `run` uses. Hard only when the figure's width resolved exactly;
+    a width that passed through a guess (a flex:1 share, a table cell) is
+    reported soft, as an estimate."""
+    out: list[Finding] = []
+    for f in static_figures(html_path, profile):
+        if f["worst_px"] is None:
+            continue
+        sel, cls, realised, ratio, body = f["selector"], f["worst_class"], f["worst_px"], f["ratio"], f["body_px"]
+        vbw, wpx, scale, exact = f["viewbox_w"], f["width_px"], f["scale"], f["exact"]
+        small = f["min_px"] < TEXT_ABS_MIN_PX
+        if small:
+            cls, realised, ratio = f["min_class"], f["min_px"], f["min_px"] / body
+        if not small and TEXT_SCALE_FAIL[0] <= ratio <= TEXT_SCALE_FAIL[1]:
+            continue
+        msg = (f"{sel}: label `.{cls or '?'}` will print at {realised:.1f}px vs {body:.2f}px body "
+               f"({ratio:.2f}x); viewBox {vbw:.0f} units drawn {wpx:.0f}px wide (scale {scale:.2f}x)")
+        if small:
+            msg += f"; below absolute floor {TEXT_ABS_MIN_PX}px"
+        if not exact:
+            msg += "; container width estimated (flex share or table cell), confirm with check"
+        fix = (f"author the viewBox at ~{wpx:.0f} units wide" if scale > 1.3
+               else f"enlarge .{cls or 'text'} inside {sel}")
+        out.append(Finding(id=f"text_scale_preflight:{sel}", severity="hard" if exact else "soft",
+                           selector=sel, value=round(ratio, 2),
+                           threshold=TEXT_ABS_MIN_PX if small else
+                           (TEXT_SCALE_FAIL[1] if ratio > 1 else TEXT_SCALE_FAIL[0]),
+                           message=msg, suggested_fix=fix))
+    return out
+
+
+def _length(v: str | None, pct_base: float | None) -> float | None:
+    if not v or v.strip() == "auto":
+        return None
+    v = v.strip()
+    if v.endswith("%"):
+        return pct_base * float(v[:-1]) / 100 if pct_base is not None else None
+    if re.fullmatch(r"[\d.]+", v):
+        return float(v)               # presentation attribute: user units = px
+    return cssutil.to_px(v)

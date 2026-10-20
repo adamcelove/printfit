@@ -14,6 +14,7 @@ dependencies = [
     "websocket-client>=1.9.2",
     "numpy>=2.5.2",
     "ortools>=9.15.6755",
+    "cssselect>=1.6.0",
 ]
 
 [project.optional-dependencies]

@@ -98,7 +98,11 @@ GEOMETRY_JS = r"""
       const c = t.getAttribute('class') || '';
       const fs = px(cs(t).fontSize);
       const k = c || '';
-      if (!(k in texts) || texts[k].computed_px < fs) texts[k] = {class: c, computed_px: fs, realised_px: fs * scale};
+      const prev = texts[k];
+      if (!prev || prev.computed_px < fs) texts[k] = {class: c, computed_px: fs, realised_px: fs * scale,
+        min_realised_px: prev ? prev.min_realised_px : fs * scale};
+      // the largest label stands for the class's ratio; the smallest decides the legibility floor
+      texts[k].min_realised_px = Math.min(texts[k].min_realised_px, fs * scale);
     }
     figEls.push(el);
     figures.push({selector: sel(el, 0, counts), tag: el.tagName.toLowerCase(),
@@ -223,6 +227,22 @@ GEOMETRY_JS = r"""
     for (const k of kids) visit(k, g);
   };
   for (const k of document.body.children) visit(k, null);
+  // inked boxes: block containers that print a border or a non-white
+  // background. When one crosses a page break Chrome splits it and its ink
+  // runs to the page edge, which reads as zero slack whatever is edited.
+  const inked_boxes = [], ibcounts = {};
+  const paleBg = c => { const m = /rgba?\(([^)]+)\)/.exec(c || ''); if (!m) return true;
+    const v = m[1].split(',').map(Number); return (v.length > 3 && v[3] === 0) || v.slice(0, 3).every(x => x >= 240); };
+  for (const el of document.body.querySelectorAll('*')) {
+    if (el.closest('svg')) continue;
+    const st = cs(el);
+    if (!/^(block|flow-root|list-item|table|flex|grid)/.test(st.display)) continue;
+    const border = ['Top', 'Bottom', 'Left', 'Right'].some(s => px(st['border' + s + 'Width']) > 0 && st['border' + s + 'Style'] !== 'none');
+    if (!border && paleBg(st.backgroundColor)) continue;
+    const r = rectOf(el); if (r.h < 40) continue;
+    inked_boxes.push({selector: sel(el, 0, ibcounts), tag: el.tagName.toLowerCase(), classes: [...el.classList], rect: r,
+      avoid: st.breakInside === 'avoid' || st.breakInside === 'avoid-page' || st.pageBreakInside === 'avoid'});
+  }
   // every element with an inline height, in document order: the answer-space
   // knobs the fitter may edit in the source by occurrence index
   const inline_heights = ihEls.map(el => ({classes: [...el.classList], rect: rectOf(el), height: el.style.height,
@@ -353,7 +373,7 @@ GEOMETRY_JS = r"""
     doc_scroll_h: document.documentElement.scrollHeight,
     body_rect: rectOf(document.body), page_rule: pageRule,
     fonts: {declared: [...declared], resolved, missing},
-    figures, qa, headings, blocks, lines, atoms, inline_heights, figure_marks,
+    figures, qa, headings, blocks, lines, atoms, inline_heights, figure_marks, inked_boxes,
     media_print: matchMedia('print').matches};
 })()
 """

@@ -82,6 +82,8 @@ regressions.
 printfit check tests/fixtures/synthetic/fixed-worksheet.html \
     --profile profiles/motion-graphs.yaml
 
+verdict: pass · 5 pages, tightest slack 185px (page 2)
+
   page 1  fill  62%   slack   368px   OK  (break)
   ...
   all hard gates pass
@@ -90,6 +92,8 @@ printfit check tests/fixtures/synthetic/fixed-worksheet.html \
 printfit check tests/fixtures/synthetic/prefix-worksheet.html \
     --profile profiles/motion-graphs.yaml
 
+verdict: fail · 15 hard: auto_height ×13, text_scale ×2 · 7 pages
+  ...
   HARD  auto_height:svg.grid.g-pa
         height derives from the container (width:100%; height:auto) ...
         fix: set an explicit height (<= 2.02in) with width:auto; max-width:100% on svg.grid.g-pa
@@ -97,8 +101,9 @@ printfit check tests/fixtures/synthetic/prefix-worksheet.html \
   verdict: fail
 ```
 
-Each run writes `report.json`, `report.html`, the PDF, and page PNGs to
-`out/<document name>/`. Run it again after an edit and the report shows only
+The first line of every report is the verdict and the failing gates, so output
+cut short by `head` or `grep` still carries the result. Each run writes
+`report.json`, `report.html`, the PDF, and page PNGs to `out/<document name>/`. Run it again after an edit and the report shows only
 what changed.
 
 ## Hard gates
@@ -109,6 +114,7 @@ what changed.
 | `text_scale` | SVG labels whose realised size drifts from the body typographic scale |
 | `figure_height` | figures whose height derives from their container |
 | `page_slack` | one-pixel overflow that silently orphans a question |
+| `blank_page` | a page that prints as a blank sheet because only an empty answer box or a white panel spilled onto it |
 | `qa_split` | a question separated from its answer space by a page break |
 | `aspect_ratio` | a stretched x–t graph, which misrepresents its slope |
 
@@ -148,6 +154,7 @@ failure, 2 on a harness error such as a missing browser.
 | `--no-diff` | skip the automatic diff |
 | `--full` | list every finding, not just new, changed, or regressed ones |
 | `--why` | explain each page overflow or underfull page |
+| `--brief` | verdict, page table and hard findings only; repeated findings collapse to one entry |
 
 ### `printfit render <html> [--out DIR]`
 
@@ -173,8 +180,14 @@ with this repository. You do not need it to check or fit worksheets.
 
 ### `printfit preflight <html> [--profile FILE]`
 
-Static checks that need no browser: text-scale authoring errors and print-color
-settings.
+Static checks that need no browser. The text-scale preflight resolves each
+figure's print width from the stylesheet the way Chrome would (real selector
+matching, specificity, `@page`, flex and grid columns) and judges the size
+each label will print at, so it agrees with the rendered `text_scale` check.
+A width that depends on a guess, such as a `flex:1` share or a table cell, is
+reported soft as an estimate. Inside `check`, the measured result decides and
+the static estimate is kept as an info finding. Also reports print-color
+settings, ignoring screen-only UI such as the answer-key toggle bar.
 
 ## Profiles
 

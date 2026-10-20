@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import dataclasses
 
+import pytest
+
 from printfit import report as REP
 from printfit.types import Finding, PageMetrics, RenderArtifacts
 
@@ -307,3 +309,75 @@ def test_render_why_text_includes_absorb_and_notes():
     assert "page 2 overflows by 29px" in text
     assert "absorb with" in text
     assert "figure knobs skipped" in text
+
+
+def _with_text(art, page_text):
+    art.dom_geometry["pdf"] = {"page_text": page_text}
+    return art
+
+
+def test_zero_slack_with_a_breakable_box_running_past_the_page_is_a_split():
+    # page 2 starts EARLY (y 900, not 1000): the naive N*H boundary would miss it
+    atoms = [atom("div.intro", 0, 850), atom("div.panel", 900, 400), atom("div.part3", 1400, 300),
+             atom("div.panel2", 1450, 700)]
+    art = _with_text(make_artifacts(atoms, n_pages=3),
+                     ["div.intro", "div.panel div.part3 div.panel2", "rest of the panel"])
+    f = Finding(id="page_slack:page-2", severity="hard", message="x", value=-0.2, threshold=12.0, page=2)
+    entry = REP.compute_why(art, [f])[0]
+    assert entry["kind"] == "split"
+    assert "div.panel2" in entry["message"] and "~250px" in entry["message"]   # 1450+700 - (900+1000)
+    assert any("break-inside: avoid" in o for o in entry["options"])
+    text = "\n".join(REP.render_why_text([entry]))
+    assert "option: keep it whole on page 2" in text
+
+
+def test_zero_slack_on_an_unbreakable_box_stays_an_overflow_entry():
+    atoms = [atom("div.a", 0, 950), atom("div.b", 960, 200, avoid=True)]
+    art = _with_text(make_artifacts(atoms), ["div.a", "div.b"])
+    f = Finding(id="page_slack:page-1", severity="hard", message="x", value=0.5, threshold=12.0, page=1)
+    assert REP.compute_why(art, [f])[0]["kind"] != "split"
+
+
+def test_blank_page_names_the_inkless_boxes_that_spilled():
+    space = dict(atom("div.sp", 960, 120), text="")
+    atoms = [atom("div.q7", 0, 960), space]
+    art = _with_text(make_artifacts(atoms), ["div.q7", ""])
+    f = Finding(id="blank_page:page-2", severity="hard", message="x", value=0.0, page=2)
+    entry = REP.compute_why(art, [f])[0]
+    assert entry["kind"] == "blank" and "div.sp" in entry["message"]
+    assert entry["need_px"] == 80                  # 960 + 120 - 1000: only the part past page 1
+
+
+def test_blank_page_is_a_hard_finding():
+    from printfit.checks import page_slack
+    art = make_artifacts([atom("div.a", 0, 900)], n_pages=3)
+    art.pages[1] = dataclasses.replace(art.pages[1], fill_ratio=0.0)
+    ids = {x.id for x in page_slack.run(art, {}) if x.failed}
+    assert ids == {"blank_page:page-2"}
+
+
+def _page_doc(tmp_path, body, css=""):
+    p = tmp_path / "doc.html"
+    p.write_text("<!doctype html><html><head><style>@page{size:letter;margin:.5in}"
+                 f"body{{margin:0;font:12pt Georgia}}{css}</style></head><body>{body}</body></html>")
+    return str(p)
+
+
+@pytest.mark.browser
+def test_chrome_split_panel_is_diagnosed_as_split(tmp_path):
+    from printfit import api
+    paras = "".join(f"<p>Panel line {i}, long enough to read as a sentence of prose.</p>" for i in range(30))
+    doc = _page_doc(tmp_path, f'<div style="height:6in"></div><div class="panel">{paras}</div><p>after</p>',
+                    ".panel{border:1px solid #333;padding:6px}")
+    rep = api.check(doc, None, str(tmp_path / "out"), no_diff=True)
+    entry = next(e for e in rep.why if e["page"] == 1)
+    assert entry["kind"] == "split" and "div.panel" in entry["message"]
+
+
+@pytest.mark.browser
+def test_chrome_blank_page_from_an_empty_box_fails_and_is_explained(tmp_path):
+    from printfit import api
+    doc = _page_doc(tmp_path, '<p>Question 7c. Explain.</p><div style="height:9.5in"></div>')
+    rep = api.check(doc, None, str(tmp_path / "out"), no_diff=True)
+    assert "blank_page:page-2" in {f.id for f in rep.findings if f.failed}
+    assert any(e["kind"] == "blank" for e in rep.why)

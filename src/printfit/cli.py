@@ -29,6 +29,8 @@ def main(argv: list[str] | None = None) -> int:
     c.add_argument("--no-diff", action="store_true", help="suppress the automatic diff against a previous run")
     c.add_argument("--full", action="store_true", help="print every finding, not just new/changed/regressed")
     c.add_argument("--why", action="store_true", help="print the why: section explaining page overflows")
+    c.add_argument("--brief", action="store_true",
+                   help="verdict, page table and hard findings only (soft findings hidden)")
     r = sub.add_parser("render"); r.add_argument("path"); r.add_argument("--out", default="out/render")
     p = sub.add_parser("preflight"); p.add_argument("path"); p.add_argument("--profile")
     e = sub.add_parser("evaluate"); e.add_argument("--out", default="eval/results.json")
@@ -82,8 +84,9 @@ def _check(a) -> int:
     if a.json:
         print(json.dumps(js, indent=1))
     else:
-        print(REP.render_text(rep, why=a.why, diff=diff, full=a.full, prev=prev_js, fit_notes=fit_notes))
-        if diff:
+        print(REP.render_text(rep, why=a.why, diff=diff, full=a.full, prev=prev_js, fit_notes=fit_notes,
+                              brief=a.brief))
+        if diff and not a.brief:
             print("  diff:", {k: len(v) for k, v in diff.items()})
     return 1 if rep.hard_failed else 0
 
