@@ -57,10 +57,11 @@ def run(artifacts: RenderArtifacts, profile: dict) -> list[Finding]:
         if tiny_px < TEXT_ABS_MIN_PX:
             out.append(Finding(id=f"text_scale:{sel}", severity="hard",
                                threshold=TEXT_ABS_MIN_PX,
-                               message=(f"smallest label in class `.{tiny.get('class') or '?'}` realises "
-                                        f"{tiny_px:.1f}px; below absolute floor {TEXT_ABS_MIN_PX}px"),
-                               suggested_fix=f"enlarge the smallest .{tiny.get('class') or 'text'} labels inside {sel}",
-                               **{**base, "value": round(tiny_px / body, 3)}))
+                               message=(f"smallest label{' in class `.' + tiny['class'] + '`' if tiny.get('class') else ''} "
+                                        f"realises {tiny_px:.1f}px; below absolute floor {TEXT_ABS_MIN_PX}px"),
+                               suggested_fix=(f"enlarge the smallest .{tiny['class']} labels inside {sel}"
+                                              if tiny.get("class") else f"enlarge the smallest labels inside {sel}"),
+                               **{**base, "value": round(tiny_px, 2)}))
         elif not TEXT_SCALE_FAIL[0] <= ratio <= TEXT_SCALE_FAIL[1]:
             out.append(Finding(id=f"text_scale:{sel}", severity="hard",
                                threshold=TEXT_SCALE_FAIL[1] if ratio > 1 else TEXT_SCALE_FAIL[0],
@@ -163,7 +164,7 @@ def preflight(html_path: str, profile: dict | None = None) -> list[Finding]:
         fix = (f"author the viewBox at ~{wpx:.0f} units wide" if scale > 1.3
                else f"enlarge .{cls or 'text'} inside {sel}")
         out.append(Finding(id=f"text_scale_preflight:{sel}", severity="hard" if exact else "soft",
-                           selector=sel, value=round(ratio, 2),
+                           selector=sel, value=round(realised, 2) if small else round(ratio, 2),
                            threshold=TEXT_ABS_MIN_PX if small else
                            (TEXT_SCALE_FAIL[1] if ratio > 1 else TEXT_SCALE_FAIL[0]),
                            message=msg, suggested_fix=fix))

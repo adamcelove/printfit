@@ -308,8 +308,9 @@ def compute_why(art: RenderArtifacts, findings: list[Finding]) -> list[dict]:
     # the same either way.
     covered = {e["page"] for e in out}
     for p in art.pages:
+        lf = layout_fill(art, atoms, p.index)
         if (p.index not in covered and not p.is_final and not p.ends_in_explicit_break
-                and p.fill_ratio < 0.5):
+                and max(p.fill_ratio, lf or 0.0) < 0.5):
             entry = _underfull_entry(art, atoms, p.index)
             if entry:
                 out.append(entry)
@@ -322,12 +323,14 @@ def atom_pages(art: RenderArtifacts, atoms: list[dict]) -> list[int | None]:
     text against each page's extracted text, in order. Atoms with no text of
     their own (answer space, figures) and text the PDF renders differently
     (MathML) come back None."""
-    norm = lambda t: re.sub(r"\s+", " ", t or "").strip().lower()
+    # whitespace dropped entirely: textContent joins "continued" and "(c)"
+    # where the PDF has a line break between them
+    norm = lambda t: re.sub(r"\s+", "", t or "").lower()
     pages = [norm(t) for t in art.dom_geometry.get("pdf", {}).get("page_text", [])]
     out: list[int | None] = []
     cur = 1
     for a in atoms:
-        key = norm(a.get("text"))[:30]
+        key = norm(a.get("text"))[:24]
         hit = None
         if len(key) >= 6:
             hit = next((i + 1 for i in range(cur - 1, len(pages)) if key in pages[i]), None)
@@ -481,6 +484,26 @@ def _blank_entry(art: RenderArtifacts, atoms: list[dict], page: int) -> dict | N
                         f"or move {spilled[0]['selector']} and what follows to a page with room"]}
 
 
+def layout_fill(art: RenderArtifacts, atoms: list[dict], page: int) -> float | None:
+    """How full page `page` is by layout, not ink: from the page's start to the
+    bottom of the last atom on it, counting empty answer space that ink-based
+    fill reads as blank. Atoms are placed by their text (`atom_pages`); a
+    textless atom after them stays on the page while it ends inside it. None
+    when no atom's text could be placed on the page."""
+    H = art.page_content_h_px
+    starts = page_starts(art, atoms)
+    pages = atom_pages(art, atoms)
+    idx = [i for i, pg in enumerate(pages) if pg == page]
+    if not idx:
+        return None
+    end = max(atoms[i]["rect"]["y"] + atoms[i]["rect"]["h"] for i in idx)
+    for a, pg in zip(atoms[idx[-1] + 1:], pages[idx[-1] + 1:]):
+        if pg is not None or a["rect"]["y"] + a["rect"]["h"] > starts[page] + H:
+            break
+        end = max(end, a["rect"]["y"] + a["rect"]["h"])
+    return max(0.0, min(1.0, (end - starts[page]) / H))
+
+
 def _underfull_entry(art: RenderArtifacts, atoms: list[dict], page: int) -> dict | None:
     """A page that ended before its content box was full because a
     keep-together group didn't fit -- the actual mechanism behind a
@@ -494,7 +517,8 @@ def _underfull_entry(art: RenderArtifacts, atoms: list[dict], page: int) -> dict
     if p is None:
         return None
     H = art.page_content_h_px
-    fill = p.fill_ratio
+    lf = layout_fill(art, atoms, page)
+    fill = p.fill_ratio if lf is None else max(lf, p.fill_ratio)
     remaining_px = max(0.0, (1.0 - fill) * H)
     end_rel = fill * H
     # page N spans DOM y in [(N-1)*H, N*H) -- see _page_of/_page_end_y.
@@ -545,6 +569,12 @@ def _underfull_entry(art: RenderArtifacts, atoms: list[dict], page: int) -> dict
                      f"break-inside: avoid) fits in {remaining_px:.0f}px; check break-before "
                      f"rules on {sel}")
         suggestion = f"consider: remove break-inside: avoid on {group}, or break before {name}"
+    elif moved_atom["rect"]["h"] <= remaining_px:
+        # it would have fitted: something other than its height ended the page
+        cause = (f"{sel} (h {moved_atom['rect']['h']:.0f}px) fits in the {remaining_px:.0f}px left, so a "
+                 f"forced break (break-before: page on it or an enclosing block) or a keep-with-next "
+                 f"rule ended page {page}")
+        suggestion = f"if page {page} should continue, remove that break; if not, nothing to fix"
     elif moved_atom.get("avoid"):
         # the atom itself is unbreakable and no keep-together group explains
         # the move -- name the atom's own height as the cause, not a group.

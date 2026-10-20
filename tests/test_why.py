@@ -185,7 +185,8 @@ def test_underfull_entry_geometrically_would_have_fit():
                       value=2.0, threshold=1.0, page=2)
     entry = REP.compute_why(art, [finding])[0]
     assert entry["group"] is None
-    assert "no keep-together group found; check break-before rules on div.small" in entry["cause"]
+    assert "div.small (h 20px) fits in the 50px left" in entry["cause"]
+    assert "forced break (break-before: page" in entry["cause"]
 
 
 def test_underfull_headline_says_was_full_not_ends_early_when_page_is_full():
