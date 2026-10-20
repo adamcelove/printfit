@@ -1,6 +1,6 @@
 """Calibration for the soft visual gates (spec Part 4).
 
-  uv run python scripts/calibrate.py collect [ROOT ...] [--reports DIR]
+  uv run python scripts/calibrate.py collect ROOT [ROOT ...] [--reports DIR] [--builders DIR ...]
   uv run python scripts/calibrate.py rescore LABELS.json
 
 collect renders every printable document once, stores its artifacts,
@@ -31,9 +31,8 @@ from printfit import render as R
 from printfit.checks import arrow_shaft, duplicate, label_collision
 
 OUT = Path("out/calibration")
-PRINTFIT_OUT = "~/projects/printfit/out"
-BUILDER_DIRS = ("~/projects/knowledge-base/scripts",)
-DEFAULT_ROOT = "~/projects/knowledge-base/curriculum"
+PRINTFIT_OUT = "out"
+BUILDER_DIRS: tuple[str, ...] = ()
 KEY_RX = re.compile(r"(^|[^a-z])key([^a-z]|$)|answer-key|key-variant", re.I)
 SOLUTION_RX = re.compile(r"(^|[^a-z])solutions?([^a-z]|$)", re.I)
 GENERIC_NAMES = {"index.html", "homework.html", "worksheet.html", "quiz.html", "test.html", "notes.html"}
@@ -239,11 +238,11 @@ document.getElementById('copy').onclick = () => {{
 </script></body></html>"""
 
 
-def collect(roots, reports=PRINTFIT_OUT) -> int:
+def collect(roots, reports=PRINTFIT_OUT, builder_dirs=BUILDER_DIRS) -> int:
     prof = P.load(None)
     OUT.mkdir(parents=True, exist_ok=True)
     items, widths = [], {}
-    docs = list(corpus(roots, reports))
+    docs = list(corpus(roots, reports, builder_dirs))
     print(f"corpus: {len(docs)} documents")
     for p in docs:
         sl = slug(p)
@@ -320,12 +319,14 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
     c = sub.add_parser("collect")
-    c.add_argument("roots", nargs="*", default=[DEFAULT_ROOT])
-    c.add_argument("--reports", default=PRINTFIT_OUT)
+    c.add_argument("roots", nargs="+", help="folders to search for printable .html")
+    c.add_argument("--reports", default=PRINTFIT_OUT, help="printfit out dir whose */report.json docs join the corpus")
+    c.add_argument("--builders", nargs="*", default=list(BUILDER_DIRS),
+                   help="extra folders of scripts that build HTML into ROOT")
     r = sub.add_parser("rescore")
     r.add_argument("labels")
     a = ap.parse_args(argv)
-    return collect(a.roots, a.reports) if a.cmd == "collect" else rescore(a.labels)
+    return collect(a.roots, a.reports, a.builders) if a.cmd == "collect" else rescore(a.labels)
 
 
 if __name__ == "__main__":
