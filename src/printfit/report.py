@@ -10,6 +10,7 @@ from __future__ import annotations
 import dataclasses
 import json
 import os
+from html import escape
 
 from PIL import Image, ImageDraw
 
@@ -168,7 +169,7 @@ def render_html(report: Report, out_path: str) -> str:
     numbered red box drawn from their geometry rects."""
     art = report.artifacts
     if art is None:
-        html = f"<h1>{report.doc}</h1><p>verdict: {report.verdict}</p>"
+        html = f"<h1>{escape(report.doc)}</h1><p>verdict: {report.verdict}</p>"
         open(out_path, "w").write(html)
         return html
     scale = art.raster_dpi / 96
@@ -198,20 +199,20 @@ def render_html(report: Report, out_path: str) -> str:
         im.save(dst)
         imgs.append(os.path.basename(dst))
     rows = "".join(
-        f"<tr><td>{n}</td><td class={f.severity}>{f.severity}</td><td><code>{f.id}</code></td>"
+        f"<tr><td>{n}</td><td class={f.severity}>{f.severity}</td><td><code>{escape(f.id)}</code></td>"
         f"<td>{'' if f.value is None else f.value}</td><td>{'' if f.threshold is None else f.threshold}</td>"
-        f"<td>{f.message}<br><i>{f.suggested_fix or ''}</i></td></tr>"
+        f"<td>{escape(f.message)}<br><i>{escape(f.suggested_fix or '')}</i></td></tr>"
         for n, f in enumerate(numbered, 1))
     pages = "".join(
-        f"<figure><img src='{src}' style='width:100%;max-width:560px;border:1px solid #ccc'>"
+        f"<figure><img src='{escape(src)}' style='width:100%;max-width:560px;border:1px solid #ccc'>"
         f"<figcaption>page {p.index}: fill {p.fill_ratio:.0%}, slack {p.slack_px:.0f}px</figcaption></figure>"
         for src, p in zip(imgs, art.pages))
     html = f"""<!doctype html><meta charset=utf-8><title>printfit report</title>
 <style>body{{font:14px system-ui;margin:24px;color:#222}} figure{{display:inline-block;margin:8px;vertical-align:top}}
 table{{border-collapse:collapse}} td{{border:1px solid #ddd;padding:4px 8px;vertical-align:top}}
 td.hard{{color:#c00;font-weight:600}} td.soft{{color:#b60}}</style>
-<h1>{os.path.basename(report.doc)} — {report.verdict} ({report.hard_failed} hard)</h1>
-<p>{art.page_count} pages · body {art.body_font_px:.2f}px · content box {art.page_content_w_px:.0f}×{art.page_content_h_px:.0f}px · {art.chrome_version}</p>
+<h1>{escape(os.path.basename(report.doc))} — {report.verdict} ({report.hard_failed} hard)</h1>
+<p>{art.page_count} pages · body {art.body_font_px:.2f}px · content box {art.page_content_w_px:.0f}×{art.page_content_h_px:.0f}px · {escape(art.chrome_version)}</p>
 <div>{pages}</div>
 <table><tr><th>#</th><th>sev</th><th>id</th><th>value</th><th>limit</th><th>message</th></tr>{rows}</table>"""
     with open(out_path, "w", encoding="utf-8") as fh:

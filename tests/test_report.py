@@ -61,3 +61,25 @@ def test_diff_only_text_hides_unchanged_and_shows_changed():
     assert "unchanged: 1 soft, 0 info (hidden; --full to show)" in txt
     full_txt = REP.render_text(rep, diff=diff, full=True, prev=prev_js)
     assert "soft:unchanged" in full_txt
+
+
+def test_html_report_escapes_document_text(tmp_path):
+    import dataclasses
+
+    from PIL import Image
+    art = load_artifacts("tests/fixtures/geometry-fixed-worksheet.json")
+    pngs = []
+    for i in range(art.page_count):
+        pngs.append(str(tmp_path / f"p{i}.png"))
+        Image.new("RGB", (40, 50), "white").save(pngs[-1])
+    art = dataclasses.replace(art, page_png_paths=pngs)
+    sel = next(iter(REP._rects_by_selector(art)))
+    bad = "<script>alert(1)</script>"
+    f = Finding(id=f"label_collision:{bad}", severity="hard", message=f"label '{bad}' overlaps",
+                selector=sel, suggested_fix=bad)
+    html = REP.render_html(Report(doc=f"/x/{bad}.html", profile=None, verdict="fail",
+                                  findings=[f], artifacts=art), str(tmp_path / "report.html"))
+    assert "<script>" not in html and "&lt;script&gt;" in html
+    html = REP.render_html(Report(doc=bad, profile=None, verdict="error", findings=[], artifacts=None),
+                           str(tmp_path / "error.html"))
+    assert "<script>" not in html
