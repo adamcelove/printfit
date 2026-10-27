@@ -1,0 +1,23 @@
+name: security
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "17 6 * * 1"  # Mondays: catch advisories published since the last push
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86  # v5
+      - name: Secrets in history (gitleaks)
+        run: docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:v8.30.1 git /repo --no-banner --redact
+      - name: Known-vulnerable Python deps (pip-audit)
+        run: |
+          uv export --frozen --no-hashes --no-emit-project > "$RUNNER_TEMP/req.txt"
+          uvx pip-audit --strict --no-deps --disable-pip -r "$RUNNER_TEMP/req.txt"
